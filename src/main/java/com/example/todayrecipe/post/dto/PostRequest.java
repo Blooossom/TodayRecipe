@@ -24,13 +24,11 @@ public class PostRequest {
 
     public Post toEntity(){
         return Post.builder()
-                .id(id)
                 .title(title)
                 .writer(writer)
                 .content(content)
                 .view(0)
                 .user(user)
                 .build();
-
     }
 }

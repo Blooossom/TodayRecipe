@@ -2,6 +2,7 @@ package com.example.todayrecipe.post.service.impl;
 
 import com.example.todayrecipe.post.dto.PostRequest;
 import com.example.todayrecipe.post.dto.PostResponse;
+import com.example.todayrecipe.post.entity.Post;
 import com.example.todayrecipe.post.repository.PostRepository;
 import com.example.todayrecipe.post.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse viewPost(@PathVariable String postId) {
-        return repo.findById(postId).orElse(null);
+        PostResponse response = new PostResponse(repo.findById(postId));
+        return response;
     }
 
 

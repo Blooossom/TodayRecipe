@@ -12,20 +12,20 @@ import lombok.*;
 @ToString
 public class PostResponse {
 
-    private String post_id;
+    private String id;
     private String title;
     private String content;
-    private String nickname;
+    private String writer;
     private int view;
     private String created_date;
     private String modified_date;
     private User user;
 
     public PostResponse (Post post) {
-        this.post_id = String.valueOf(post.getId());
+        this.id = String.valueOf(post.getId());
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.nickname = post.getUser().getNickname();
+        this.writer = post.getWriter();
         this.view = post.getView();
         this.created_date = post.getCreated_date();
         this.modified_date = post.getModified_date();

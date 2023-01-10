@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +22,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentResponse> viewCommentList(PostRequest request) {
-       return null;
+       return repo.findByPostId(request.toEntity()).stream()
+               .map(en -> new CommentResponse(en))
+               .collect(Collectors.toList());
     }
 
     @Override
@@ -30,7 +33,7 @@ public class CommentServiceImpl implements CommentService {
             repo.save(Comment.builder()
                     .post(Post.builder().id(Long.valueOf(commentRequest.getId())).build())
                     .user(User.builder().nickname(commentRequest.getWriter()).build())
-                    .text(commentRequest.getText())
+                    .content(commentRequest.getContent())
                     .created_date(commentRequest.getCreated_date())
                     .modified_date(commentRequest.getModified_date())
                     .build());

@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
-@Component
-@Aspect
 public class LogAdvice {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

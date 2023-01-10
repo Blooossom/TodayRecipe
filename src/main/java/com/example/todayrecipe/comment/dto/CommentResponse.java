@@ -10,15 +10,15 @@ import lombok.*;
 @ToString
 public class CommentResponse {
 
-    private String nickname;
+    private String writer;
     private String created_date;
     private String modified_date;
-    private String text;
+    private String content;
     private String post_id;
-    private CommentResponse (Comment comment) {
+    public CommentResponse (Comment comment) {
         this.post_id = String.valueOf(comment.getPost().getId());
-        this.nickname = comment.getUser().getNickname();
-        this.text = comment.getText();
+        this.writer = comment.getUser().getNickname();
+        this.content = comment.getContent();
         this.created_date = comment.getCreated_date();
         this.modified_date = comment.getModified_date();
     }

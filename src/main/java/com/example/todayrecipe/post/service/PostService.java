@@ -10,9 +10,12 @@ import java.util.Optional;
 
 public interface PostService {
 
+    //레시피 게시판 이동 시 게시글 출력
     List<PostResponse> selectPostList();
 
+    //레시피 작성할 때
     String addPost(PostRequest request);
 
+    //게시글을 눌렀을 때, 게시글을 출력해 줌
     PostResponse viewPost(String postId);
 }

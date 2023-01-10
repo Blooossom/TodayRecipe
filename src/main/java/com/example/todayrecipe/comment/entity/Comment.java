@@ -23,7 +23,8 @@ public class Comment {
     private Long id;
 
     @Column(columnDefinition = "TEXT", nullable = false)
-    private String text;
+    private String content;
+
     @Column
     private String writer;
 

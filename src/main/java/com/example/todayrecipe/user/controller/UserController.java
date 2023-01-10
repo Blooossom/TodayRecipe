@@ -11,6 +11,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -25,7 +26,7 @@ public class UserController {
 
     @ApiOperation(value = "회원 로그인", notes = "회원 로그인 후 세션에 아이디 등록")
     @PostMapping("/login")
-    public String login(UserRequest req, HttpSession session){
+    public String login(UserRequest req, @ApiIgnore HttpSession session){
         String result = service.login(req);
         if (result.equals("success")) {
             session.setAttribute("userid", req.getUserid());
@@ -67,9 +68,4 @@ public class UserController {
         }
         return "index";
     }
-
-
-
-
-
 }

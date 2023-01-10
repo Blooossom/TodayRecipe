@@ -1,5 +1,7 @@
 package com.example.todayrecipe.post.repository;
 
+import com.example.todayrecipe.comment.dto.CommentResponse;
+import com.example.todayrecipe.comment.entity.Comment;
 import com.example.todayrecipe.post.dto.PostResponse;
 import com.example.todayrecipe.post.entity.Post;
 import com.example.todayrecipe.user.entity.User;
@@ -10,6 +12,7 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    Optional<PostResponse> findById(String id);
+    Post findById(String id);
+
 
 }

@@ -16,7 +16,7 @@ public class CommentRequest {
     private String writer;
     private String created_date;
     private String modified_date;
-    private String text;
+    private String content;
     private Post post;
     private User user;
 
@@ -25,7 +25,7 @@ public class CommentRequest {
                 .post(post)
                 .user(user)
                 .writer(writer)
-                .text(text)
+                .content(content)
                 .build();
     }
 

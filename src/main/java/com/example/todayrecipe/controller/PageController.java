@@ -38,7 +38,7 @@ public class PageController {
     @ApiOperation(value = "게시글 작성 화면으로 이동", notes = "게시글 작성 페이지")
     @GetMapping("/addRecipe")
     public String writePost(){
-        return "addrecipe";
+        return "/smarteditor/newPost";
     }
     @ApiOperation(value = "게시글 수정 화면으로 이동", notes = "게시글 수정 페이지")
     @GetMapping("/post/modify/{post_id}")

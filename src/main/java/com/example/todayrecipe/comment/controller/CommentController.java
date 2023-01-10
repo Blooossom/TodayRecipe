@@ -1,7 +1,9 @@
 package com.example.todayrecipe.comment.controller;
 
 import com.example.todayrecipe.comment.dto.CommentRequest;
+import com.example.todayrecipe.comment.dto.CommentResponse;
 import com.example.todayrecipe.comment.repository.CommentRepository;
+import com.example.todayrecipe.comment.service.CommentService;
 import com.example.todayrecipe.post.dto.PostRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -16,16 +18,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentController {
 
-    private final CommentRepository repo;
+    private final CommentService service;
 
 
     @ApiOperation(value = "댓글 출력", notes = "게시글과 함께 댓글을 가져오는 API")
     @ApiImplicitParam(name = "PostRequest", value = "게시글 정보 요청, 통해서 PostID에 연결된 댓글 가져옴", required = true)
-    @GetMapping("/comment")
-    public String selectComment(PostRequest request){
-
-
-        return null;
+    @GetMapping("/viewComment")
+    public List<CommentResponse> selectComment(PostRequest request){
+        return  service.viewCommentList(request);
     }
 
     @ApiOperation(value = "댓글 작성", notes = "댓글을 작성하는 API")
