@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,4 +35,11 @@ public class PostServiceImpl implements PostService {
         }
         return "success";
     }
+
+    @Override
+    public PostResponse viewPost(@PathVariable String postId) {
+        return repo.findById(postId).orElse(null);
+    }
+
+
 }

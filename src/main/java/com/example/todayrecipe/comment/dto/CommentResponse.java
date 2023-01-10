@@ -1,6 +1,6 @@
 package com.example.todayrecipe.comment.dto;
 
-import com.example.climbingassemble.comment.entity.Comment;
+import com.example.todayrecipe.comment.entity.Comment;
 import lombok.*;
 
 @Getter
@@ -16,7 +16,7 @@ public class CommentResponse {
     private String text;
     private String post_id;
     private CommentResponse (Comment comment) {
-        this.post_id = String.valueOf(comment.getPost().getPost_id());
+        this.post_id = String.valueOf(comment.getPost().getId());
         this.nickname = comment.getUser().getNickname();
         this.text = comment.getText();
         this.created_date = comment.getCreated_date();

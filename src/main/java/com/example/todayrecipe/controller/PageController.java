@@ -4,6 +4,7 @@ import com.example.todayrecipe.user.dto.UserRequest;
 import com.example.todayrecipe.user.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +12,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
 @Api(tags = {"페이지 컨트롤러"}, description = "페이지 이동에 사용되는 컨트롤러")
-@RestController
+@Controller
 public class PageController {
 
     @ApiOperation(value = "페이지 방문 첫 화면", notes = "Index 페이지")
@@ -30,7 +31,7 @@ public class PageController {
         return "login";
     }
     @ApiOperation(value = "게시판 이동", notes = "게시판 페이지")
-    @GetMapping("/post")
+    @GetMapping("/goPost")
     public String goPost(){
         return "postlist";
     }
@@ -43,6 +44,12 @@ public class PageController {
     @GetMapping("/post/modify/{post_id}")
     public String modifyPost(){
         return "modifypost";
+    }
+
+    @ApiOperation(value = "게시글 보기", notes = "클릭을 통해 post id를 받고, 해당하는 post를 리턴함")
+    @GetMapping("/viewPost/{id}")
+    public String viewPost(){
+        return "post";
     }
 
 

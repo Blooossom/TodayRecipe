@@ -39,23 +39,23 @@
                         <form class="user">
                             <div class="form-group row">
                             </div><div class="form-group">
-                            <input type="userId" class="form-control form-control-user" id="userId"
+                            <input type="userid" class="form-control form-control-user" required name="userid" id="userid"
                                    placeholder="ID를 입력해주세요">
                         </div>
                             <div class="form-group">
-                                <input type="password" class="form-control form-control-user" id="userpassword"
+                                <input type="password" class="form-control form-control-user" required name="password" id="password"
                                        placeholder="비밀번호를 입력해주세요">
                             </div>
                             <div class="form-group">
-                                <input type="email" class="form-control form-control-user" id="email"
+                                <input type="email" class="form-control form-control-user" required name = "email" id="email"
                                        placeholder="이메일 주소를 입력해주세요">
                             </div>
                             <div class="form-group">
-                                <input type="nickname" class="form-control form-control-user" id="nickname"
+                                <input type="nickname" class="form-control form-control-user" required name="nickname" id="nickname"
                                        placeholder="닉네임을 입력해주세요">
                             </div>
                             <div class="form-group">
-                                <input type="address" class="form-control form-control-user" id="address"
+                                <input type="address" class="form-control form-control-user" required name="address" id="address"
                                        placeholder="주소를 입력해주세요">
                             </div>
                             <a class="btn btn-primary btn-user btn-block" onclick="signUp()">
@@ -94,15 +94,15 @@
 <script>
     function signUp() {
         $.ajax({
-            url : 'signup',
-            type : 'POST',
+            url : '/signup',
             data : {
-                userId : $("#userid").val(),
-                userPassword : $("#userpassword").val(),
-                nickName : $("#nickname").val(),
-                email : $("#email").val(),
-                address : $("#address").val()
+                userid : $('#userid').val(),
+                password : $('#password').val(),
+                email : $('#email').val(),
+                nickname : $('#nickname').val(),
+                address : $('#address').val()
             },
+            type : 'POST',
             success : function (resp) {
                 if (resp === 'success') {
                     alert("회원가입에 성공하였습니다.")

@@ -22,15 +22,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public String adminLogin(AdminReq adminReq) {
-        Admin admin =
-            repo.findByAdminidAndAdminpassword(adminReq.getAdminId(), adminReq.getAdminPassword())
-                    .orElse(null);
-        if (admin != null) {
-            return "success";
-        }
-        else {
-            return "failed";
-        }
+
+            return null;
+
     }
 
     @Override
@@ -50,13 +44,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public String banUser(String userId) {
-        try {
-            repo.deleteUserByUserId(userId);
-        } catch (Exception err) {
-            err.printStackTrace();
-            return "failed";
-        }
-        return "success";
+        return null;
     }
 
     @Override
@@ -74,6 +62,6 @@ public class AdminServiceImpl implements AdminService {
     //수정 필요할 듯
     @Override
     public UserResponse findUserByUserid(String userid) {
-        return repo.findUserByUserId(userid);
+        return null;
     }
 }

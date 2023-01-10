@@ -43,13 +43,13 @@
                                 </div>
                                 <form class="user">
                                     <div class="form-group">
-                                        <input type="email" class="form-control form-control-user"
-                                               id="exampleInputEmail" aria-describedby="emailHelp"
-                                               placeholder="Enter Email Address...">
+                                        <input type="userid" class="form-control form-control-user"
+                                               id="userid" required name="userid"
+                                               placeholder="Enter userid">
                                     </div>
                                     <div class="form-group">
                                         <input type="password" class="form-control form-control-user"
-                                               id="exampleInputPassword" placeholder="Password">
+                                               id="password" required name="password" placeholder="Password">
                                     </div>
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox small">
@@ -59,7 +59,9 @@
                                     </div>
                                     <a class="btn btn-primary btn-user btn-block" onclick="login()">
                                         로그인
-                                    </a><a class="btn btn-primary btn-user btn-block" onclick="location.href='/goSignUp'">회원가입</a>
+                                    </a><a href="/goSignUp" class="btn btn-primary btn-user btn-block">
+                                    회원가입
+                                </a>
                                     <hr>
                                     <a href="index.html" class="btn btn-google btn-user btn-block">
                                         <i class="fab fa-google fa-fw"></i> Google로 로그인
@@ -98,15 +100,15 @@
     function login() {
         $.ajax({
             url : '/login',
-            type : 'POST',
             data : {
-                userId : $("#userid").val(),
-                userPassword : $("#userpassword").val()
+                'userid' : $("#userid").val(),
+                'password' : $("#password").val()
             },
+            type : 'POST',
             success : function (resp) {
                 if (resp === 'success') {
                     alert("로그인에 성공하셨습니다!")
-                    location.href = "/goPostList";
+                    location.href='postlist.html'
                 }
                 else {
                     alert("아이디와 비밀번호를 확인해주세요.")

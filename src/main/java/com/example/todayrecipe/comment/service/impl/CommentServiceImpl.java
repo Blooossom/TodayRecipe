@@ -21,15 +21,15 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentResponse> viewCommentList(PostRequest request) {
-       return repo.findByPostPost_id(String.valueOf(request.getPost_id()));
+       return null;
     }
 
     @Override
     public String addComment(CommentRequest commentRequest) {
         try {
             repo.save(Comment.builder()
-                    .post(Post.builder().post_id(Long.valueOf(commentRequest.getPost_id())).build())
-                    .user(User.builder().nickname(commentRequest.getNickname()).build())
+                    .post(Post.builder().id(Long.valueOf(commentRequest.getId())).build())
+                    .user(User.builder().nickname(commentRequest.getWriter()).build())
                     .text(commentRequest.getText())
                     .created_date(commentRequest.getCreated_date())
                     .modified_date(commentRequest.getModified_date())

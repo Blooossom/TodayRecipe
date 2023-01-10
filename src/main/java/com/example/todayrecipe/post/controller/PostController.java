@@ -19,7 +19,7 @@ public class PostController {
     private final PostService service;
 
     @ApiOperation(value = "게시글 전체 조회", notes = "게시글 전부 가져오는 API")
-    @GetMapping("/post")
+    @GetMapping("/PostList")
     public List<PostResponse> viewPostList(){
        return service.selectPostList();
     }
