@@ -1,4 +1,4 @@
-package com.example.todayrecipe.controller;
+package com.example.todayrecipe.page.controller;
 
 import com.example.todayrecipe.user.dto.UserRequest;
 import com.example.todayrecipe.user.entity.User;
@@ -61,6 +61,10 @@ public class PageController {
         return "myPage";
     }
 
+    @GetMapping("/goMain")
+    public String goMain(){
+        return "main";
+    }
     @ApiOperation(value = "회원 탈퇴", notes = "마이페이지 이동 후 존재하는 버튼을 눌러 회원 탈퇴를 하는 API")
     //회원 탈퇴를 통해 DB내의 계정정보를 정지? 삭제?
     @DeleteMapping("signout")
