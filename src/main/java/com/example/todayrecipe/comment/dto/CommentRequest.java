@@ -12,18 +12,18 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class CommentRequest {
-    private String id;
+    private Long id;
     private String writer;
     private String created_date;
     private String modified_date;
     private String content;
-    private Post post;
-    private User user;
+    private Long post_id;
+    private Long user_id;
 
     public Comment toEntity(CommentRequest request){
         return Comment.builder()
-                .post(post)
-                .user(user)
+                .post(Post.builder().id(post_id).build())
+                .user(User.builder().id(user_id).build())
                 .writer(writer)
                 .content(content)
                 .build();

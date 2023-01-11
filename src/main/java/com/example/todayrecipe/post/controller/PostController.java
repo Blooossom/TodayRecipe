@@ -8,6 +8,7 @@ import com.example.todayrecipe.post.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,25 +33,27 @@ public class PostController {
 
     @ApiOperation(value = "게시글 작성", notes = "게시글을 작성하는 API")
     @PostMapping("/post")
-    public String writePost(PostRequest post) {
-        return service.addPost(post);
+    public String writePost(PostRequest post, Long user_id) {
+        return service.addPost(post, user_id);
     }
 
     @ApiOperation(value = "게시글 삭제", notes = "게시글을 삭제하는 API")
     @DeleteMapping("/post")
-    public String deletePost(Post post){
-        return null;
+    public String deletePost(Long post_id){
+        return service.deletePost(post_id);
     }
 
     @ApiOperation(value = "게시글 수정", notes = "게시글을 수정하는 API")
-    @PutMapping("/post")
-    public String modifiedPost(Post post){
-        return null;
+    @PutMapping("/updatePost")
+    public String modifiedPost(PostRequest request, Long post_id){
+        return service.updatePost(post_id, request);
     }
 
     //게시글 조회
     @GetMapping("/post")
-    public PostResponse viewPost(String postId){
-        return service.viewPost(postId);
+    public String viewPost(@RequestParam final Long id, Model model) {
+        PostResponse response = service.viewPost(id);
+        model.addAttribute("post", response);
+        return "/post";
     }
 }

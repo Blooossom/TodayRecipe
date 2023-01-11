@@ -14,8 +14,12 @@ public interface PostService {
     List<PostResponse> selectPostList();
 
     //레시피 작성할 때
-    String addPost(PostRequest request);
+    String addPost(PostRequest request, Long user_id);
 
     //게시글을 눌렀을 때, 게시글을 출력해 줌
-    PostResponse viewPost(String postId);
+    PostResponse viewPost(Long postId);
+
+    String deletePost(Long postId);
+
+    String updatePost(Long postId, PostRequest request);
 }

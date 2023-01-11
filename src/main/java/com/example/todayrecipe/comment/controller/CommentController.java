@@ -7,6 +7,7 @@ import com.example.todayrecipe.comment.service.CommentService;
 import com.example.todayrecipe.post.dto.PostRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -22,34 +23,33 @@ public class CommentController {
 
 
     @ApiOperation(value = "댓글 출력", notes = "게시글과 함께 댓글을 가져오는 API")
-    @ApiImplicitParam(name = "PostRequest", value = "게시글 정보 요청, 통해서 PostID에 연결된 댓글 가져옴", required = true)
+    @ApiImplicitParam(name = "post_id", value = "게시글 식별 ID", required = true)
     @GetMapping("/viewComment")
-    public List<CommentResponse> selectComment(PostRequest request){
-        return  service.viewCommentList(request);
+    public List<CommentResponse> selectComment(Long post_id){
+        return  service.viewCommentList(post_id);
     }
 
     @ApiOperation(value = "댓글 작성", notes = "댓글을 작성하는 API")
-    @PostMapping("/comment")
-    public String addComment(CommentRequest request) {
-        return null;
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "content", value = "댓글 내용", required = true),
+            @ApiImplicitParam(name = "writer", value = "댓글 작성자", required = true),
+            @ApiImplicitParam(name = "user_id", value = "유저 식별 ID", required = true),
+            @ApiImplicitParam(name = "post_id", value = "게시글 식별 ID", required = true)
+    })
+    @PostMapping("/addComment")
+    public String addComment(CommentRequest request, Long postid, Long userid) {
+        return service.addComment(request, postid, userid);
     }
 
     @ApiOperation(value = "댓글 수정", notes = "댓글 수정하는 API")
-    @PutMapping("/comment")
-    public String modifyComment(String commentId, CommentRequest request){
-        return null;
+    @PutMapping("/updateComment")
+    public String modifyComment(Long commentId, CommentRequest request){
+        return service.modifyComment(commentId, request);
     }
 
     @ApiOperation(value = "댓글 삭제", notes = "댓글을 삭제하는 API")
-    @DeleteMapping("/comment")
-    public String deleteComment(String commentId){
-        return null;
+    @DeleteMapping("/deleteComment")
+    public String deleteComment(Long commentId){
+        return service.deleteComment(commentId);
     }
-
-
-
-
-
-
-
 }

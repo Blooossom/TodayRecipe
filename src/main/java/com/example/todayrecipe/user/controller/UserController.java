@@ -43,7 +43,7 @@ public class UserController {
             service.checkEmailDuplication(req);
         } catch (Exception err) {
             err.printStackTrace();
-            return "signup";
+            return "failed";
         }
         if (errors.hasErrors()) {
 
@@ -53,10 +53,10 @@ public class UserController {
             for (String key : validatorResult.keySet()) {
                 model.addAttribute(key, validatorResult.get(key));
             }
-            return "signup";
+            return "failed";
         }
         service.signUp(req);
-        return "login";
+        return "success";
     }
 
     @ApiOperation(value = "로그아웃", notes = "로그아웃 후 세션 삭제 하는 API")

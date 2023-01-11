@@ -1,6 +1,8 @@
 package com.example.todayrecipe.comment.dto;
 
 import com.example.todayrecipe.comment.entity.Comment;
+import com.example.todayrecipe.post.entity.Post;
+import com.example.todayrecipe.user.entity.User;
 import lombok.*;
 
 @Getter
@@ -10,13 +12,15 @@ import lombok.*;
 @ToString
 public class CommentResponse {
 
+    private Long id;
     private String writer;
     private String created_date;
     private String modified_date;
     private String content;
-    private String post_id;
+    private Post post;
+    private User user;
     public CommentResponse (Comment comment) {
-        this.post_id = String.valueOf(comment.getPost().getId());
+        this.id = comment.getId();
         this.writer = comment.getUser().getNickname();
         this.content = comment.getContent();
         this.created_date = comment.getCreated_date();

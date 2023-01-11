@@ -21,18 +21,20 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository repo;
 
     @Override
-    public List<CommentResponse> viewCommentList(PostRequest request) {
-       return repo.findByPostId(request.toEntity()).stream()
-               .map(en -> new CommentResponse(en))
-               .collect(Collectors.toList());
+    public List<CommentResponse> viewCommentList(Long post_id) {
+        return repo.findByPostId(post_id)
+                .stream()
+                .map(CommentResponse::new)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public String addComment(CommentRequest commentRequest) {
+    public String addComment(CommentRequest commentRequest, Long post_id, Long user_id) {
         try {
             repo.save(Comment.builder()
-                    .post(Post.builder().id(Long.valueOf(commentRequest.getId())).build())
-                    .user(User.builder().nickname(commentRequest.getWriter()).build())
+                    .post(Post.builder().id(post_id).build())
+                    .user(User.builder().id(user_id).build())
+                    .writer(commentRequest.getWriter())
                     .content(commentRequest.getContent())
                     .created_date(commentRequest.getCreated_date())
                     .modified_date(commentRequest.getModified_date())
@@ -47,7 +49,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public String deleteComment(Long comment_id) {
         try{
-            repo.deleteById(comment_id);
+            repo.deleteCommentById(comment_id);
         }catch (Exception err) {
             err.printStackTrace();
             return "failed";
@@ -56,8 +58,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public String modifyComment(Long comment_id) {
-        return null;
+    public String modifyComment(Long comment_id, CommentRequest request) {
+        try{
+            Comment comment = repo.findCommentById(comment_id);
+            comment.update(request.getContent());
+        }catch (Exception err){
+            err.printStackTrace();
+            return "failed";
+        }
+        return "success";
     }
 
 }

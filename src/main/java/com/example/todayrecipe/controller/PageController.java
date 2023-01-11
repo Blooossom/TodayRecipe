@@ -47,9 +47,9 @@ public class PageController {
     }
 
     @ApiOperation(value = "게시글 보기", notes = "클릭을 통해 post id를 받고, 해당하는 post를 리턴함")
-    @GetMapping("/viewPost/{id}")
+    @GetMapping("/viewPost")
     public String viewPost(){
-        return "post";
+        return "viewPost";
     }
 
 

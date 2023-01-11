@@ -20,15 +20,15 @@ public class PostRequest {
     private int view;
     private String created_date;
     private String modified_date;
-    private User user;
+    private Long user_id;
 
     public Post toEntity(){
         return Post.builder()
+                .user(User.builder().id(user_id).build())
                 .title(title)
                 .writer(writer)
                 .content(content)
                 .view(0)
-                .user(user)
                 .build();
     }
 }

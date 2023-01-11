@@ -13,6 +13,10 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
 
-    List<Comment> findByPostId(Post post);
+    List<Comment> findByPostId(Long post_id);
+
+    String deleteCommentById(Long comment_id);
+
+    Comment findCommentById(Long comment_id);
     
 }

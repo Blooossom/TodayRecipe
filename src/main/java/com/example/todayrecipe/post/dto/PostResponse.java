@@ -12,7 +12,7 @@ import lombok.*;
 @ToString
 public class PostResponse {
 
-    private String id;
+    private Long id;
     private String title;
     private String content;
     private String writer;
@@ -22,7 +22,7 @@ public class PostResponse {
     private User user;
 
     public PostResponse (Post post) {
-        this.id = String.valueOf(post.getId());
+        this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.writer = post.getWriter();

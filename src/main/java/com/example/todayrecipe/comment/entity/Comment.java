@@ -20,6 +20,7 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(columnDefinition = "TEXT", nullable = false)
@@ -43,6 +44,9 @@ public class Comment {
     private Post post;
 
 
-
+    public void update(String content){
+        this.content = content;
+        this.modified_date = modified_date;
+    }
 
 }

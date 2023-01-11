@@ -1,5 +1,7 @@
 package com.example.todayrecipe.user.dto;
 
+import com.example.todayrecipe.comment.entity.Comment;
+import com.example.todayrecipe.post.entity.Post;
 import com.example.todayrecipe.user.entity.User;
 import lombok.*;
 
@@ -18,19 +20,21 @@ public class UserRequest {
     private String userid;
 
     @NotBlank(message = "비밀번호는 필수 입력 사항입니다.")
-    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}", message = "비밀번호는 8 ~ 16글자의 영문 대소문자, 숫자, 특수문자를 사용하세요.")
+    //@Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}", message = "비밀번호는 8 ~ 16글자의 영문 대소문자, 숫자, 특수문자를 사용하세요.")
     private String password;
 
     @NotBlank(message = "닉네임은 필수 입력 사항입니다.")
-    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$}", message = "닉네임은 특수문자를 제외한 2 ~ 10자리로 이루어져야 합니다.")
+    //@Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$}", message = "닉네임은 특수문자를 제외한 2 ~ 10자리로 이루어져야 합니다.")
     private String nickname;
 
     @NotBlank(message = "이메일은 필수 입력 사항입니다.")
-    @Pattern(regexp = "^(?:\\w+\\.?)*\\w+@(?:\\w+\\.)+\\w+$", message = "이메일 형식이 올바르지 않습니다.")
+    //@Pattern(regexp = "^(?:\\w+\\.?)*\\w+@(?:\\w+\\.)+\\w+$", message = "이메일 형식이 올바르지 않습니다.")
     private String email;
 
     @NotBlank(message = "주소는 필수 입력 사항입니다.")
     private String address;
+    private Post post;
+    private Comment comment;
 
     public User toEntity() {
         return User.builder()
