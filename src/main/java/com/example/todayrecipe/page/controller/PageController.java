@@ -76,4 +76,9 @@ public class PageController {
         return "index";
     }
 
+    @GetMapping("/blank")
+    public String blankPage(){
+        return "test";
+    }
+
 }
