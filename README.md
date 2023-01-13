@@ -5,7 +5,7 @@
 </aside>
 
 1. 회원 가입 - 로그아웃 - 회원탈퇴 - 로그인 기능을 구현하고 싶음
-- 2. 각각의 레시피 게시판을 생성
+2. 각각의 레시피 게시판을 생성
     1. 게시글 작성/수정/삭제/읽기 등 기초적인 기능 필요
     2. 페이징 처리(게시글 검색후 페이징 처리도 필요)
     3. 게시글 검색
@@ -14,8 +14,8 @@
     - 6. 댓글
         1. 댓글작성/수정/삭제
         2. 비밀댓글도 가능하면 해보기
-1. 요리 테마를 정했을 때 추천을 많이 받은 레시피를 우선적으로 보여주는 것도 괜찮을 듯(그러면 글에다가 추천 기능도 필요할 듯함)
-- 4. 관리자 페이지
+3. 요리 테마를 정했을 때 추천을 많이 받은 레시피를 우선적으로 보여주는 것도 괜찮을 듯(그러면 글에다가 추천 기능도 필요할 듯함)
+4. 관리자 페이지
     - 회원 목록 가져오기(이 때 당연히 회원 개인 정보는 숨기는 게 필요할 듯?(보이는 것도 선정해야 할 듯 함)
     - 게시글 관리(수정은X 삭제 정도만)
     - 회원 관리 시 추방 기능도 있으면? 좋을 듯(신고 누적 같은)
@@ -53,13 +53,13 @@
 | email | VARCHAR | NOT NULL/unique | 이메일 |
 | address | VARCHAR | NOT NULL | 주소 |
 | indate | VARCHAR | NOT NULL | 가입일 |
-1. Admin
+2. Admin
 
 | Column | Type | Condition | About |
 | --- | --- | --- | --- |
 | AdminId | VARCHAR | NOTNULL/PK | 관리자 아이디 |
 | AdminPW | VARCHAR | NOTNULL | 관리자 비밀번호 |
-1. Post
+3. Post
 
 | Column | Type | Condition | About |
 | --- | --- | --- | --- |
@@ -71,7 +71,7 @@
 | created_date | VARCHAR | NOT NULL | 생성일 |
 | modified_date | VARCHAR | NOT NULL | 수정일 |
 | user_id | Long | Foreign key/NOT NULL | 계정 고유값 |
-1. Comment
+4. Comment
 
 | Coulmn | Type | Condition | About |
 | --- | --- | --- | --- |
@@ -99,7 +99,7 @@
 | 로그아웃 | GET | /logout | 인덱스 페이지 |
 | 마이페이지 이동 | GET | /userpage/{userid} | 유저 마이페이지 |
 | 회원탈퇴 | DELETE | /signout | 인덱스 페이지 |
-1. Admin
+2. Admin
 
 | 기능 | Method Type | URL | Return |
 | --- | --- | --- | --- |
@@ -109,7 +109,7 @@
 | 게시글 조회 | GET | /view/postlist | 게시글 목록 조회 페이지 |
 | 회원 추방 | DELETE | /admin/user/ban/{userid} | 회원목록 조회 페이지 |
 | 게시글 삭제 | DELETE | /admin/post/delete/{postid} | 게시글 목록 조회 페이지 |
-1. Post
+3. Post
 
 | 기능 | Method Type | URL | Return |
 | --- | --- | --- | --- |
@@ -124,7 +124,7 @@
 | 게시글 조회 | GET | /api/post/{post_id} | 게시글 조회 |
 | 게시글 수정 | PUT | /api/post/{post_id} | 게시글 수정 |
 | 게시글 삭제 | DELETE | /api/post/{post_id} | 게시글 삭제 |
-1. Comment
+4. Comment
 
 | 기능 | Method Type | URL | Return |
 | --- | --- | --- | --- |
@@ -143,7 +143,7 @@
 - 마찬가지 상태에서 댓글 작성 불가
 - 자신이 작성한 댓글/게시글에 대해 수정 및 삭제 불가
 
-1. Admin
+2. Admin
 - 관리자 로그인을 하지 않은 상태에서는 관리자 기능 이용 불가
 - 관리자 로그인을 하지 않은 상태에서 url을 직접 입력하여 이동하려고 시도할 시 리턴은 null
 
@@ -244,3 +244,17 @@
   7. 댓글 작성
   8. 게시글 수정
   9. 댓글 수정
+<aside>
+💡 2023. 01. 12(목)
+
+</aside>
+
+1. 공통 html 레이아웃(header, sidebar, footer) 따로 분할해서 common directory에 넣고 적용해야 할 때 끌어오는 방법 사용
+
+<aside>
+💡 2023. 01. 13(금)
+
+</aside>
+
+1. 게시글 작성 뷰 틀은 잡아둠 → 현재 문제(작성자는 로그인 정보에서 받아오고, 뷰의 정보를 어떻게 서버로 넘길 지 생각할 것)
+2. Spring Security를 통해 회원가입 로직 변경함
