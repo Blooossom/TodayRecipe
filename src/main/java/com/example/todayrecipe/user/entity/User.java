@@ -42,6 +42,9 @@ public class User {
     @Column
     private String indate;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
 
     @OneToMany(fetch = FetchType.LAZY)
     @OrderBy("created_date DESC")
