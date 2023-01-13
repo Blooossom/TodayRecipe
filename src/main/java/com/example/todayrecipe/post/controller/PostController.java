@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -32,8 +33,9 @@ public class PostController {
     }
 
     @ApiOperation(value = "게시글 작성", notes = "게시글을 작성하는 API")
-    @PostMapping("/post")
-    public String writePost(PostRequest post, Long user_id) {
+    @PostMapping("/addRecipe")
+    public String writePost(PostRequest post, HttpSession session) {
+        Long user_id = Long.valueOf((String) session.getAttribute("id"));
         return service.addPost(post, user_id);
     }
 
@@ -49,10 +51,11 @@ public class PostController {
         return service.updatePost(post_id, request);
     }
 
-    //게시글 조회
-    @GetMapping("/post")
+    @ApiOperation(value = "게시글 보기", notes = "클릭을 통해 post id를 받고, 해당하는 post를 리턴함")
+    @GetMapping("/viewPost")
     public String viewPost(@RequestParam final Long id, Model model) {
         PostResponse response = service.viewPost(id);
+        service.viewPost(id);
         model.addAttribute("post", response);
         return "/post";
     }

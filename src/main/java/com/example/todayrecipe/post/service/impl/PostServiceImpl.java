@@ -8,6 +8,7 @@ import com.example.todayrecipe.post.service.PostService;
 import com.example.todayrecipe.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
@@ -49,7 +50,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse viewPost(Long postId) {
-        PostResponse response = new PostResponse(repo.findPostById(postId));
+        Post post = repo.findPostById(postId);
+        int view = post.getView();
+        PostResponse response = new PostResponse(post);
         return response;
     }
 
@@ -74,6 +77,11 @@ public class PostServiceImpl implements PostService {
             return "failed";
         }
         return "success";
+    }
+    @Transactional
+    @Override
+    public int updateView(Long id) {
+        return repo.updateView(id);
     }
 
 

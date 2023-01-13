@@ -36,20 +36,14 @@ public class PageController {
         return "postlist";
     }
     @ApiOperation(value = "게시글 작성 화면으로 이동", notes = "게시글 작성 페이지")
-    @GetMapping("/addRecipe")
+    @GetMapping("/addPost")
     public String writePost(){
-        return "/smarteditor/newPost";
+        return "addrecipe";
     }
     @ApiOperation(value = "게시글 수정 화면으로 이동", notes = "게시글 수정 페이지")
     @GetMapping("/post/modify/{post_id}")
     public String modifyPost(){
         return "modifypost";
-    }
-
-    @ApiOperation(value = "게시글 보기", notes = "클릭을 통해 post id를 받고, 해당하는 post를 리턴함")
-    @GetMapping("/viewPost")
-    public String viewPost(){
-        return "viewPost";
     }
 
 
