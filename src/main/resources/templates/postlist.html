@@ -196,8 +196,8 @@
                 let con = '';
                 for (let i=0; i<data.length; i++){
                     con += '<tr>';
-                    con += '<td>' + data[i].id + '</td>';
-                    con += '<td>' + data[i].title + '</td>';
+                    con += '<td>' + data[i].id +'</td>';
+                    con += '<td>'+'<a href="/viewPost/'+data[i].id+'" >' + data[i].title + '</a>'+ '</td>';
                     con += '<td>' + data[i].writer + '</td>';
                     con += '<td>' + data[i].view + '</td>';
                     con += '<td>' + data[i].created_date + '</td>';
@@ -208,6 +208,8 @@
             }
         });
     }
+
+
 </script>
 </body>
 

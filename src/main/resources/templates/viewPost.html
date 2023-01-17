@@ -12,50 +12,213 @@
   <title>Today Recipe</title>
 
   <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link
           href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet">
 
   <!-- Custom styles for this template-->
-  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
+<body id="top">
 
-  <div class="page_tits">
-    <h3>게시판 관리</h3>
-    <p class="path"><strong>현재 위치 :</strong> <span>게시판 관리</span> <span>리스트형</span> <span>상세정보</span></p>
+<!-- Sidebar -->
+<div id="wrapper">
+  <head th:replace="/common/sidebar.html"></head>
+  <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Main Content -->
+    <div id="content">
+      <head th:replace="/common/header.html"></head>
+      <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+          <h1 class="h3 mb-0 text-gray-800">게시판</h1>
+          <br>
+          <h1 class="h3 mb-0 text-gray-800">ddd</h1>
+          <a href="/addPost" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                  class="fas fa-download fa-sm text-white-50"></i>레시피 작성하기</a>
+        </div>
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                  <th>
+                    <label for="id">번호 : <a th:text="${postResponse.id}"/></label>
+                    <input type="hidden" id="id" value="{{postResponse.id}}"></th>
+                  <th><label>작성일 : <a th:text="${postResponse.created_date}"/></label></th>
+                </tr>
+                <tr>
+                  <th>
+                    <label for="title">제목 : <a th:text="${postResponse.title}"/>
+                      <input type="hidden" id="title" value="{{postResponse.title}}"></label>
+                  </th>
+                </tr>
+                <tr>
+                  <th><label>작성자 : <a th:text="${postResponse.writer}"/></label></th>
+                  <th><label><i class=" bi bi-eye-fill"> 조회수 <a th:text="${postResponse.view}"/></i></label></th>
+                </tr>
+                </thead>
+                <tbody id="tbody"> </tbody>
+              </table>
+              <div class="card-body">
+                <textarea rows="20" class="form-control" readonly>[[${postResponse.content}]]</textarea>
+              </div>
+            </div>
+          </div>
+          {{! Buttons }}
+          {{#user}}
+          <a href="/" role="button" class="btn btn-info bi bi-arrow-return-left"> 목록</a>
+          {{#writer}}
+          <a href="/posts/update/{{id}}" role="button" class="btn btn-primary bi bi-pencil-square"> 수정</a>
+          <button type="button"  id="btn-delete" class="btn btn-danger bi bi-trash"> 삭제</button>
+          {{/writer}}
+          {{/user}}
+          {{^user}}
+          <a href="/" role="button" class="btn btn-info bi bi-arrow-return-left"> 목록</a>
+          {{/user}}
+        </div>
+
+
+      </div>
+      <!-- /.container-fluid -->
+
+    </div>
+    <!-- End of Main Content -->
+
+    <!-- Footer -->
+    <head th:replace="/common/footer.html"></head>
+    <!-- End of Footer -->
+
   </div>
+  <!-- End of Content Wrapper -->
 
-  <div class="content">
-    <section>
-      <table class="tb tb_row">
-        <colgroup>
-          <col style="width:10%;" /><col style="width:23%;" /><col style="width:10%;" /><col style="width:23%;" />
-        </colgroup>
-        <tbody>
-        <tr>
-          <th scope="row">제목</th>
-          <td>[[ ${post.title} ]]</td>
+</div>
+<!-- End of Page Wrapper -->
 
-          <th scope="row">조회</th>
-          <td colspan="3">[[ ${post.view} ]]</td>
-        </tr>
-        <tr>
-          <th scope="row">이름</th>
-          <td colspan="3">[[ ${post.writer} ]]</td>
-        </tr>
-        <tr>
-          <th scope="row">내용</th>
-          <td colspan="3">[[ ${post.content} ]]</td>
-        </tr>
-        </tbody>
-      </table>
-      <p class="btn_set">
-        <a th:href="@{/post/write.do( id=${post.id} )}" class="btns btn_bdr4 btn_mid">수정</a>
-        <button type="button" class="btns btn_bdr1 btn_mid">삭제</button>
-        <a href="/goPost" class="btns btn_bdr3 btn_mid">뒤로</a>
-      </p>
-    </section>
-  </div> <!--/* .content */-->
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+  <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">로그아웃을 하시려면 로그아웃을 눌러 주세요</div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+        <a class="btn btn-primary" href="/goLogout">로그아웃</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Page level plugins -->
+<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<!-- wow JS
+    ============================================ -->
+<script src="/js/admin/wow.min.js"></script>
+<!-- price-slider JS
+    ============================================ -->
+<script src="/js/admin/jquery-price-slider.js"></script>
+<!-- meanmenu JS
+    ============================================ -->
+<script src="/js/admin/jquery.meanmenu.js"></script>
+<!-- owl.carousel JS
+    ============================================ -->
+<script src="/js/admin/owl.carousel.min.js"></script>
+<!-- sticky JS
+    ============================================ -->
+<script src="/js/admin/jquery.sticky.js"></script>
+<!-- scrollUp JS
+    ============================================ -->
+<script src="/js/admin/jquery.scrollUp.min.js"></script>
+<!-- mCustomScrollbar JS
+    ============================================ -->
+<script src="/js/admin/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="/js/admin/scrollbar/mCustomScrollbar-active.js"></script>
+<!-- metisMenu JS
+    ============================================ -->
+<script src="/js/admin/metisMenu/metisMenu.min.js"></script>
+<script src="/js/admin/metisMenu/metisMenu-active.js"></script>
+<!-- sparkline JS
+    ============================================ -->
+<script src="/js/admin/sparkline/jquery.sparkline.min.js"></script>
+<script src="/js/admin/sparkline/jquery.charts-sparkline.js"></script>
+<!-- calendar JS
+    ============================================ -->
+<script src="/js/admin/calendar/moment.min.js"></script>
+<script src="/js/admin/calendar/fullcalendar.min.js"></script>
+<script src="/js/admin/calendar/fullcalendar-active.js"></script>
+<!-- float JS
+    ============================================ -->
+<script src="/js/admin/flot/jquery.flot.js"></script>
+<script src="/js/admin/flot/jquery.flot.resize.js"></script>
+<script src="/js/admin/flot/curvedLines.js"></script>
+<script src="/js/admin/flot/flot-active.js"></script>
+<!-- plugins JS
+    ============================================ -->
+<script src="/js/admin/plugins.js"></script>
+<!-- main JS
+    ============================================ -->
+<script src="/js/admin/main.js"></script>
+<!-- Bootstrap core JavaScript-->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="/vendor/chart.js/Chart.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="/js/demo/chart-area-demo.js"></script>
+<script src="/js/demo/chart-pie-demo.js"></script>
+<script>
+  var id=[[${postResponse.id}]];
+
+  $("#btn-delete").click(function() {
+    if (confirm("레시피를 삭제하시겠습니까?")){
+      $.ajax({
+        url: "/deletePost",
+        type: "DELETE",
+        data: {'id': id},
+        success: function (data) {
+          if (data === 'success') {
+            alert("레시피를 삭제하였습니다");
+            location.href = "/goPost";
+          } else {
+            alert("레시피 삭제를 실패하였습니다.")
+          }
+        }
+      });
+    }
+  })
+</script>
+</body>
+
 </html>

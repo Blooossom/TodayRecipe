@@ -44,7 +44,7 @@ public class AdminController {
     }
 
     @ApiOperation(value = "게시글 삭제", notes = "이용 기준에 맞지 않는 게시글을 삭제하는 API")
-    @DeleteMapping("/deletePost")
+    @DeleteMapping("/deletePost1")
     public String deletePost(String title){
         return service.deletePost(title);
     }

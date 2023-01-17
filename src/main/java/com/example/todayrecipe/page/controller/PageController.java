@@ -1,19 +1,27 @@
 package com.example.todayrecipe.page.controller;
 
+import com.example.todayrecipe.post.dto.PostRequest;
+import com.example.todayrecipe.post.dto.PostResponse;
+import com.example.todayrecipe.post.service.PostService;
 import com.example.todayrecipe.user.dto.UserRequest;
 import com.example.todayrecipe.user.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
+@RequiredArgsConstructor
 @Api(tags = {"페이지 컨트롤러"}, description = "페이지 이동에 사용되는 컨트롤러")
 @Controller
 public class PageController {
 
+    private final PostService service;
     @ApiOperation(value = "페이지 방문 첫 화면", notes = "Index 페이지")
     @GetMapping("/")
     public String index(){
@@ -69,6 +77,13 @@ public class PageController {
         return "index";
     }
 
+    @ApiOperation(value = "게시글 보기", notes = "클릭을 통해 post id를 받고, 해당하는 post를 리턴함")
+    @GetMapping("/viewPost/{id}")
+    public String viewPost(@PathVariable String id, Model model) {
+        model.addAttribute("postResponse", service.getPost(Long.valueOf(id)));
+        service.updateView(Long.valueOf(id));
+        return "/viewPost";
+    }
     @GetMapping("/blank")
     public String blankPage(){
         return "test";

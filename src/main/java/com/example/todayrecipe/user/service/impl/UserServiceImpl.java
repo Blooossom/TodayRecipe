@@ -5,7 +5,6 @@ import com.example.todayrecipe.user.entity.User;
 import com.example.todayrecipe.user.repository.UserRepository;
 import com.example.todayrecipe.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
@@ -19,14 +18,12 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repo;
-    private final BCryptPasswordEncoder encoder;
 
 
     @Override
     public String signUp(UserRequest req) {
         try {
-            req.setPassword(encoder.encode(req.getPassword()));
-            repo.save(req.toEntity()).getId();
+            repo.save(req.toEntity());
         } catch (Exception err) {
             err.printStackTrace();
             return "failed";

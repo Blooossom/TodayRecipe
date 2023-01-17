@@ -8,6 +8,7 @@ import com.example.todayrecipe.post.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,27 +23,38 @@ public class PostController {
 
     @ApiOperation(value = "게시글 전체 조회", notes = "게시글 전부 가져오는 API")
     @GetMapping("/viewPostList")
-    public List<PostResponse> viewPostList(){
-       return service.selectPostList();
+    public List<PostResponse> viewPostList(HttpSession session){
+        session.setAttribute("post_id", null);
+        return service.selectPostList();
     }
 
     @ApiOperation(value = "게시글 검색", notes = "키워드에 따라 게시글을 검색하는 API")
     @GetMapping("/post/search?keyword={keyword}")
-    public List<PostResponse> viewPostListByNickName(@PathVariable String nickname) {
+    public List<PostResponse> viewPostListByNickName(HttpSession session) {
+        session.setAttribute("post_id", null);
         return null;
     }
 
     @ApiOperation(value = "게시글 작성", notes = "게시글을 작성하는 API")
     @PostMapping("/addRecipe")
-    public String writePost(PostRequest post, HttpSession session) {
-        Long user_id = Long.valueOf((String) session.getAttribute("id"));
-        return service.addPost(post, user_id);
+    public String writePost(PostRequest request, HttpSession session) {
+        String user_id = String.valueOf(session.getAttribute("userid"));
+        return service.addPost(request, user_id);
     }
 
+    @Transactional
     @ApiOperation(value = "게시글 삭제", notes = "게시글을 삭제하는 API")
-    @DeleteMapping("/post")
-    public String deletePost(Long post_id){
-        return service.deletePost(post_id);
+    @DeleteMapping("/deletePost")
+    public String deletePost(@RequestParam String id){
+        System.out.println(id);
+        return service.deletePost(Long.valueOf(id));
+    }
+
+    @GetMapping("/selectPost")
+    public PostResponse selectPost(HttpSession session){
+        Long postId = Long.valueOf(String.valueOf(session.getAttribute("post_id")));
+        service.updateView(postId);
+        return service.viewPost(postId);
     }
 
     @ApiOperation(value = "게시글 수정", notes = "게시글을 수정하는 API")
@@ -51,12 +63,5 @@ public class PostController {
         return service.updatePost(post_id, request);
     }
 
-    @ApiOperation(value = "게시글 보기", notes = "클릭을 통해 post id를 받고, 해당하는 post를 리턴함")
-    @GetMapping("/viewPost")
-    public String viewPost(@RequestParam final Long id, Model model) {
-        PostResponse response = service.viewPost(id);
-        service.viewPost(id);
-        model.addAttribute("post", response);
-        return "/post";
-    }
+
 }

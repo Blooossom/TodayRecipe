@@ -6,6 +6,7 @@ import com.example.todayrecipe.post.entity.Post;
 import com.example.todayrecipe.post.repository.PostRepository;
 import com.example.todayrecipe.post.service.PostService;
 import com.example.todayrecipe.user.entity.User;
+import com.example.todayrecipe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository repo;
+    private final UserRepository userRepo;
 
     @Override
     public List<PostResponse> selectPostList() {
@@ -29,15 +31,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public String addPost(PostRequest request, Long user_id) {
+    public String addPost(PostRequest request, String user_id) {
         try{
+            User user = userRepo.findUserByUserid(user_id).orElse(null);
             repo.save(Post.builder()
-                    .user(User.builder().id(user_id).build())
+                    .user(user)
                     .title(request.getTitle())
-                    .writer(request.getWriter())
+                    .writer(user.getNickname())
                     .content(request.getContent())
-                    .created_date(request.getCreated_date())
-                    .modified_date(request.getModified_date())
+                    .created_date("2023-01-17") //바꿔야 함ㅇㅇ
+                    .modified_date("2023-01-17") //이것도
                     .view(0)
                     .build()
             );
@@ -51,7 +54,6 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse viewPost(Long postId) {
         Post post = repo.findPostById(postId);
-        int view = post.getView();
         PostResponse response = new PostResponse(post);
         return response;
     }
@@ -83,6 +85,15 @@ public class PostServiceImpl implements PostService {
     public int updateView(Long id) {
         return repo.updateView(id);
     }
-
-
+    @Override
+    @Transactional
+    public PostResponse getPost(Long postId){
+        Optional<Post> postWrapper = repo.findById(postId);
+        if (postWrapper.isPresent()) {
+            Post post = postWrapper.get();
+            PostResponse response = new PostResponse(post);
+            return response;
+        }
+        return null;
+    }
 }

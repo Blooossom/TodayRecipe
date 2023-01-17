@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Api(tags = {"댓글 컨트롤러"}, description = "댓글 기본 CRUD, 비밀댓글, 작성자 및 게시글 작성자만 확인가능 등")
@@ -37,7 +38,8 @@ public class CommentController {
             @ApiImplicitParam(name = "post_id", value = "게시글 식별 ID", required = true)
     })
     @PostMapping("/addComment")
-    public String addComment(CommentRequest request, Long postid, Long userid) {
+    public String addComment(CommentRequest request, Long postid, HttpSession session) {
+        String userid = String.valueOf(session.getAttribute("id"));
         return service.addComment(request, postid, userid);
     }
 

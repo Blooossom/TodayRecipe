@@ -11,7 +11,7 @@ public interface CommentService {
 
     List<CommentResponse> viewCommentList(Long post_id);
 
-    String addComment(CommentRequest commentRequest, Long postid, Long userid);
+    String addComment(CommentRequest commentRequest, Long postid, String userid);
 
     String deleteComment(Long comment_id);
 

@@ -8,6 +8,7 @@ import com.example.todayrecipe.comment.service.CommentService;
 import com.example.todayrecipe.post.dto.PostRequest;
 import com.example.todayrecipe.post.entity.Post;
 import com.example.todayrecipe.user.entity.User;
+import com.example.todayrecipe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository repo;
+    private final UserRepository userRepo;
 
     @Override
     public List<CommentResponse> viewCommentList(Long post_id) {
@@ -29,15 +31,16 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public String addComment(CommentRequest commentRequest, Long post_id, Long user_id) {
+    public String addComment(CommentRequest commentRequest, Long post_id, String userid) {
         try {
+            User user = userRepo.findUserByUserid(userid).orElse(null);
             repo.save(Comment.builder()
                     .post(Post.builder().id(post_id).build())
-                    .user(User.builder().id(user_id).build())
-                    .writer(commentRequest.getWriter())
+                    .user(user)
+                    .writer(user.getNickname())
                     .content(commentRequest.getContent())
-                    .created_date(commentRequest.getCreated_date())
-                    .modified_date(commentRequest.getModified_date())
+                    .created_date("2023-01-17")
+                    .modified_date("2023-01-17")
                     .build());
         }catch (Exception err) {
             err.printStackTrace();
