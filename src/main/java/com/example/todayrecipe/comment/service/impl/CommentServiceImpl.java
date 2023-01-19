@@ -7,6 +7,7 @@ import com.example.todayrecipe.comment.repository.CommentRepository;
 import com.example.todayrecipe.comment.service.CommentService;
 import com.example.todayrecipe.post.dto.PostRequest;
 import com.example.todayrecipe.post.entity.Post;
+import com.example.todayrecipe.post.repository.PostRepository;
 import com.example.todayrecipe.user.entity.User;
 import com.example.todayrecipe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +21,12 @@ import java.util.stream.Collectors;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository repo;
+    private final PostRepository postRepo;
     private final UserRepository userRepo;
 
     @Override
     public List<CommentResponse> viewCommentList(Long post_id) {
-        return repo.findByPostId(post_id)
+        return repo.findAllByPostId(post_id)
                 .stream()
                 .map(CommentResponse::new)
                 .collect(Collectors.toList());
@@ -33,9 +35,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public String addComment(CommentRequest commentRequest, Long post_id, String userid) {
         try {
+            Post post = postRepo.findPostById(post_id);
             User user = userRepo.findUserByUserid(userid).orElse(null);
             repo.save(Comment.builder()
-                    .post(Post.builder().id(post_id).build())
+                    .post(post)
                     .user(user)
                     .writer(user.getNickname())
                     .content(commentRequest.getContent())

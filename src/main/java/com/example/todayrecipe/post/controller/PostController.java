@@ -59,8 +59,8 @@ public class PostController {
 
     @ApiOperation(value = "게시글 수정", notes = "게시글을 수정하는 API")
     @PutMapping("/updatePost")
-    public String modifiedPost(PostRequest request, Long post_id){
-        return service.updatePost(post_id, request);
+    public String modifiedPost(@RequestParam Long id){
+        return service.updatePost(id);
     }
 
 

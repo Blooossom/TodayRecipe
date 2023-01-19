@@ -5,6 +5,7 @@ import com.example.todayrecipe.comment.dto.CommentResponse;
 import com.example.todayrecipe.comment.repository.CommentRepository;
 import com.example.todayrecipe.comment.service.CommentService;
 import com.example.todayrecipe.post.dto.PostRequest;
+import com.example.todayrecipe.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -26,7 +27,8 @@ public class CommentController {
     @ApiOperation(value = "댓글 출력", notes = "게시글과 함께 댓글을 가져오는 API")
     @ApiImplicitParam(name = "post_id", value = "게시글 식별 ID", required = true)
     @GetMapping("/viewComment")
-    public List<CommentResponse> selectComment(Long post_id){
+    public List<CommentResponse> selectComment(HttpSession session){
+        Long post_id = Long.valueOf(String.valueOf(session.getAttribute("post_id")));
         return  service.viewCommentList(post_id);
     }
 
@@ -39,7 +41,9 @@ public class CommentController {
     })
     @PostMapping("/addComment")
     public String addComment(CommentRequest request, Long postid, HttpSession session) {
-        String userid = String.valueOf(session.getAttribute("id"));
+        String userid = String.valueOf(session.getAttribute("userid"));
+        System.out.println(request.getContent());
+        System.out.println(userid);
         return service.addComment(request, postid, userid);
     }
 

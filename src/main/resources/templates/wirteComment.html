@@ -40,12 +40,14 @@
 <script>
     function subComment() {
         var content = $("comment").val();
+        var postid = $[[${postResponse.id}]];
 
         $.ajax({ url: "/addComment",
             type:"POST",
             data:
                 {
-                    "content":content
+                    "content":content,
+                    "postid" : postid
                 },
             success: function (data) {
                 if(data === 'success'){
@@ -75,5 +77,22 @@
 <script src="js/demo/chart-area-demo.js"></script>
 <script src="js/demo/chart-pie-demo.js"></script>
 
+<!--
+$.ajax({
+type: "POST",
+url: "submit-comment.php",
+data: {
+name: $("#name").val(),
+email: $("#email").val(),
+comment: $("#comment").val()
+},
+success: function(response) {
+console.log("Comment submitted successfully");
+},
+error: function(err) {
+console.log("Error occurred while submitting comment");
+}
+});
+-->
 </body>
 </html>

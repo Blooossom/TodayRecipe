@@ -73,19 +73,27 @@
               </div>
             </div>
           </div>
-          {{! Buttons }}
-          {{#user}}
-          <a href="/" role="button" class="btn btn-info bi bi-arrow-return-left"> 목록</a>
-          {{#writer}}
-          <a href="/posts/update/{{id}}" role="button" class="btn btn-primary bi bi-pencil-square"> 수정</a>
+          <a href="/goPost" role="button" class="btn btn-info bi bi-arrow-return-left"> 목록</a>
+          <a href="/modifyPost/{postResponse.id}}" role="button" class="btn btn-primary bi bi-pencil-square"> 수정</a>
           <button type="button"  id="btn-delete" class="btn btn-danger bi bi-trash"> 삭제</button>
-          {{/writer}}
-          {{/user}}
-          {{^user}}
-          <a href="/" role="button" class="btn btn-info bi bi-arrow-return-left"> 목록</a>
-          {{/user}}
         </div>
-
+        <table class="tb tb_row">
+          <colgroup>
+            <col style="width:15%;" /><col style="width:35%;" /><col style="width:15%;" /><col style="width:35%;" />
+          </colgroup>
+          <tbody>
+          <tr>
+            <th> 댓글 내용 </th>
+            <td colspan="3"><textarea id="comment" name="comment" cols="100" rows="10" placeholder="내용을 입력해 주세요."></textarea></td>
+          </tr>
+          </tbody>
+        </table>
+        <p class="btn_set" align="center">
+          <button type="button" id="btn-comment-save"  class="btns btn_st3 btn_mid">저장</button>
+          <button type="button" id="btn-comment-delete"  class="btns btn_st3 btn_mid">삭제</button>
+          <a href="/goPost" class="btns btn_bdr3 btn_mid">뒤로</a>
+        </p>
+        <head th:replace="/commentlist.html"></head>
 
       </div>
       <!-- /.container-fluid -->
@@ -192,16 +200,39 @@
 <!-- Custom scripts for all pages-->
 <script src="/js/sb-admin-2.min.js"></script>
 
-<!-- Page level plugins -->
-<script src="/vendor/chart.js/Chart.min.js"></script>
 
-<!-- Page level custom scripts -->
-<script src="/js/demo/chart-area-demo.js"></script>
-<script src="/js/demo/chart-pie-demo.js"></script>
 <script>
-  var id=[[${postResponse.id}]];
+  $("#btn-comment-save").click(function () {
+    var content = $("#comment").val();
+    $.ajax({
+      url: "/addComment",
+      type:"POST",
+      data:
+              {
+                "content": content,
+                "postid" : id
+              },
+      success: function (data) {
+        if(data === 'success'){
+          alert("댓글 등록 성공");
+          location.href = "/goPost";
+        }else{
+          alert("댓글 등록 실패");
+        }
+      }
+    });
+  })
+</script>
+<script>
+  $("#btn-comment-delete").click(function (){
 
+  })
+
+
+</script>
+<script>
   $("#btn-delete").click(function() {
+    var id=[[${postResponse.id}]];
     if (confirm("레시피를 삭제하시겠습니까?")){
       $.ajax({
         url: "/deletePost",
@@ -219,6 +250,7 @@
     }
   })
 </script>
+
 </body>
 
 </html>

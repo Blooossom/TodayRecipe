@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
@@ -48,8 +49,8 @@ public class PageController {
         return "addrecipe";
     }
     @ApiOperation(value = "게시글 수정 화면으로 이동", notes = "게시글 수정 페이지")
-    @GetMapping("/post/modify/{post_id}")
-    public String modifyPost(){
+    @GetMapping("/modifyPost/{id}")
+    public String modifyPost(@RequestParam String id){
         return "modifypost";
     }
 
@@ -79,8 +80,9 @@ public class PageController {
 
     @ApiOperation(value = "게시글 보기", notes = "클릭을 통해 post id를 받고, 해당하는 post를 리턴함")
     @GetMapping("/viewPost/{id}")
-    public String viewPost(@PathVariable String id, Model model) {
+    public String viewPost(@PathVariable String id, Model model, HttpSession session) {
         model.addAttribute("postResponse", service.getPost(Long.valueOf(id)));
+        session.setAttribute("post_id", id);
         service.updateView(Long.valueOf(id));
         return "/viewPost";
     }

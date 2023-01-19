@@ -70,10 +70,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public String updatePost(Long postId, PostRequest request) {
+    public String updatePost(Long postId) {
         try{
             Post post = repo.findPostById(postId);
-            post.update(request.getTitle(), request.getContent());
+            post.update(post.getTitle(), post.getContent());
         } catch (Exception err){
             err.printStackTrace();
             return "failed";

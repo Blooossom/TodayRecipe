@@ -21,7 +21,7 @@ public class CommentResponse {
     private User user;
     public CommentResponse (Comment comment) {
         this.id = comment.getId();
-        this.writer = comment.getUser().getNickname();
+        this.writer = comment.getWriter();
         this.content = comment.getContent();
         this.created_date = comment.getCreated_date();
         this.modified_date = comment.getModified_date();
