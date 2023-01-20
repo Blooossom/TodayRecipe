@@ -29,6 +29,7 @@ public class CommentController {
     @GetMapping("/viewComment")
     public List<CommentResponse> selectComment(HttpSession session){
         Long post_id = Long.valueOf(String.valueOf(session.getAttribute("post_id")));
+        System.out.println(service.viewCommentList(post_id));
         return  service.viewCommentList(post_id);
     }
 

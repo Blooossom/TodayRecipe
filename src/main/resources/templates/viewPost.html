@@ -34,11 +34,9 @@
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-          <h1 class="h3 mb-0 text-gray-800">게시판</h1>
-          <br>
-          <h1 class="h3 mb-0 text-gray-800">ddd</h1>
-          <a href="/addPost" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                  class="fas fa-download fa-sm text-white-50"></i>레시피 작성하기</a>
+          <a href="/goPost" role="button" class="btn btn-info bi bi-arrow-return-left"> 목록</a>
+          <a href="/modifyPost/ + ${'postResponse.id+'}" role="button" class="btn btn-primary bi bi-pencil-square"> 수정</a>
+          <button type="button"  id="btn-delete" class="btn btn-danger bi bi-trash"> 삭제</button>
         </div>
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
@@ -73,9 +71,8 @@
               </div>
             </div>
           </div>
-          <a href="/goPost" role="button" class="btn btn-info bi bi-arrow-return-left"> 목록</a>
-          <a href="/modifyPost/{postResponse.id}}" role="button" class="btn btn-primary bi bi-pencil-square"> 수정</a>
-          <button type="button"  id="btn-delete" class="btn btn-danger bi bi-trash"> 삭제</button>
+          <head th:replace="/commentlist.html"></head>
+
         </div>
         <table class="tb tb_row">
           <colgroup>
@@ -93,7 +90,6 @@
           <button type="button" id="btn-comment-delete"  class="btns btn_st3 btn_mid">삭제</button>
           <a href="/goPost" class="btns btn_bdr3 btn_mid">뒤로</a>
         </p>
-        <head th:replace="/commentlist.html"></head>
 
       </div>
       <!-- /.container-fluid -->
@@ -203,6 +199,7 @@
 
 <script>
   $("#btn-comment-save").click(function () {
+    var id=[[${postResponse.id}]];
     var content = $("#comment").val();
     $.ajax({
       url: "/addComment",
