@@ -27,8 +27,8 @@ public class PostResponse {
         this.content = post.getContent();
         this.writer = post.getWriter();
         this.view = post.getView();
-        this.created_date = post.getCreated_date();
-        this.modified_date = post.getModified_date();
+        /*this.created_date = post.getCreated_date();
+        this.modified_date = post.getModified_date();*/
     }
 
 

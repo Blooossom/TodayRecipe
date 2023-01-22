@@ -27,6 +27,9 @@ public class PostServiceImpl implements PostService {
     public List<PostResponse> selectPostList() {
         List<PostResponse> responseList = repo.findAll().stream()
                 .map(PostResponse::new).collect(Collectors.toList());
+        for (int i = 0; i < responseList.size(); i++) {
+            System.out.println(responseList.get(i).getCreated_date());
+        }
         return responseList;
     }
 
@@ -39,8 +42,8 @@ public class PostServiceImpl implements PostService {
                     .title(request.getTitle())
                     .writer(user.getNickname())
                     .content(request.getContent())
-                    .created_date("2023-01-17") //바꿔야 함ㅇㅇ
-                    .modified_date("2023-01-17") //이것도
+                    /*.created_date("2023-01-17") //바꿔야 함ㅇㅇ
+                    .modified_date("2023-01-17") //이것도*/
                     .view(0)
                     .build()
             );

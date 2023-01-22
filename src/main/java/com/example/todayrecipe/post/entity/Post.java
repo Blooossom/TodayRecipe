@@ -1,12 +1,15 @@
 package com.example.todayrecipe.post.entity;
 
 import com.example.todayrecipe.user.entity.User;
+import com.example.todayrecipe.util.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table
@@ -14,7 +17,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Getter
-public class Post {
+@EntityListeners(AuditingEntityListener.class)
+public class Post extends BaseTimeEntity {
 
 
     @Id
@@ -34,11 +38,11 @@ public class Post {
     @Column(columnDefinition = "integer default 0")
     private int view;
 
-    @Column
-    private String created_date;
+    /*@Column
+    private LocalDateTime created_date;
 
     @Column
-    private String modified_date;
+    private LocalDateTime modified_date;*/
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -47,7 +51,6 @@ public class Post {
     public void update(String title, String content){
         this.title = title;
         this.content = content;
-        this.modified_date = modified_date;
     }
 
 }
