@@ -5,6 +5,8 @@ import com.example.todayrecipe.post.entity.Post;
 import com.example.todayrecipe.user.entity.User;
 import lombok.*;
 
+import java.time.format.DateTimeFormatter;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,6 +29,8 @@ public class PostResponse {
         this.content = post.getContent();
         this.writer = post.getWriter();
         this.view = post.getView();
+        this.created_date = post.getCreated_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.modified_date = post.getModified_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         /*this.created_date = post.getCreated_date();
         this.modified_date = post.getModified_date();*/
     }

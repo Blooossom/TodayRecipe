@@ -1,5 +1,6 @@
 package com.example.todayrecipe.post.entity;
 
+import com.example.todayrecipe.post.dto.PostEditor;
 import com.example.todayrecipe.user.entity.User;
 import com.example.todayrecipe.util.BaseTimeEntity;
 import lombok.AllArgsConstructor;
@@ -38,6 +39,9 @@ public class Post extends BaseTimeEntity {
     @Column(columnDefinition = "integer default 0")
     private int view;
 
+    @Column(columnDefinition = "integer default 0")
+    private int recommend;
+
     /*@Column
     private LocalDateTime created_date;
 
@@ -51,6 +55,16 @@ public class Post extends BaseTimeEntity {
     public void update(String title, String content){
         this.title = title;
         this.content = content;
+    }
+
+    public PostEditor.PostEditorBuilder toEditor(){
+        return PostEditor.builder()
+                .title(title)
+                .content(content);
+    }
+    public void edit(PostEditor postEditor) {
+        title =  postEditor.getTitle();
+        content = postEditor.getContent();
     }
 
 }
