@@ -43,6 +43,22 @@ public class PageController {
     public String goPost(){
         return "postlist";
     }
+
+    @GetMapping("/goRecommendRecipe")
+    public String goRecommendRecipe(){
+        return "recommendRecipe";
+    }
+
+
+    @GetMapping("/checkUserInfo")
+    public String goCheckUser(){
+        return "/mypageDir/checkUser";
+    }
+    @GetMapping("/goChangeInfo")
+    public String goChangeInfo(){
+        return "/mypageDir/changeUserInfo";
+    }
+
     @ApiOperation(value = "게시글 작성 화면으로 이동", notes = "게시글 작성 페이지")
     @GetMapping("/addPost")
     public String writePost(){
@@ -50,17 +66,29 @@ public class PageController {
     }
     @ApiOperation(value = "게시글 수정 화면으로 이동", notes = "게시글 수정 페이지")
     @GetMapping("/modifyPost/{id}")
-    public String modifyPost(@RequestParam String id){
+    public String modifyPost(@PathVariable String id, Model model){
+        model.addAttribute("postResponse", service.getPost(Long.valueOf(id)));
         return "modifypost";
     }
 
 
+
     @ApiOperation(value = "마이페이지 이동", notes = "현재 로그인 된 회원의 마이 페이지 이동")
-    @GetMapping("/myPage/{user_ID}")
+    @GetMapping("/myPage/{userid}")
     public String goMyPage(@ApiIgnore HttpSession session){
         String userId = String.valueOf(session.getAttribute("userid"));
         //스케쥴에 사용한 기능 추가
-        return "myPage";
+        return "/mypageDir/mypage";
+    }
+
+    @GetMapping("/goMyPost")
+    public String goMyPostList(){
+        return "/mypageDir/myPostList";
+    }
+
+    @GetMapping("/goMyComment")
+    public String goMyCommentList(){
+        return "/mypageDir/myCommentList";
     }
 
     @GetMapping("/goMain")
@@ -69,7 +97,7 @@ public class PageController {
     }
     @ApiOperation(value = "회원 탈퇴", notes = "마이페이지 이동 후 존재하는 버튼을 눌러 회원 탈퇴를 하는 API")
     //회원 탈퇴를 통해 DB내의 계정정보를 정지? 삭제?
-    @DeleteMapping("signout")
+    @DeleteMapping("/goSignOut")
     public String signOut(HttpSession session, UserRequest request){
         if (session.getAttribute("userid") != null) {
             User user = request.toEntity();
@@ -82,6 +110,7 @@ public class PageController {
     @GetMapping("/viewPost/{id}")
     public String viewPost(@PathVariable String id, Model model, HttpSession session) {
         model.addAttribute("postResponse", service.getPost(Long.valueOf(id)));
+        System.out.println(model.getAttribute("postResponse").toString());
         session.setAttribute("post_id", id);
         service.updateView(Long.valueOf(id));
         return "/viewPost";
@@ -90,5 +119,12 @@ public class PageController {
     public String blankPage(){
         return "test";
     }
+
+
+    @GetMapping("/redirect")
+    public String redirect() {
+        return "redirect:/";
+    }
+
 
 }
