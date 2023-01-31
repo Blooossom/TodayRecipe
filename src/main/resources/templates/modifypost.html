@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -12,13 +12,13 @@
     <title>레시피 작성하기</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
@@ -59,7 +59,7 @@
                             <tbody>
                             <tr>
                                 <th> 제목 </th>
-                                <td colspan="3"><input type="text" id="title" name="title"  maxlength="50" cols="100" value="postResponse.title" /></td>
+                                <td colspan="3"><textarea id="title" name="title"  cols="100" rows="1">[[${postResponse.title}]]</textarea></td>
                             </tr>
                             <tr>
                                 <th> 내용 </th>
@@ -69,7 +69,7 @@
                         </table>
                     </form>
                     <p class="btn_set" align="center">
-                        <button type="button" id="saveBtn" onclick="subForm()" class="btns btn_st3 btn_mid">저장</button>
+                        <button type="button" onclick="updatePost()"  class="btns btn_st3 btn_mid">저장</button>
                         <a href="/goPost" class="btns btn_bdr3 btn_mid">뒤로</a>
                     </p>
                 </section>
@@ -115,64 +115,75 @@
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
+<script src="/js/sb-admin-2.min.js"></script>
 
 <!-- Page level plugins -->
-<script src="vendor/chart.js/Chart.min.js"></script>
+<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
 <!-- Page level custom scripts -->
-<script src="js/demo/chart-area-demo.js"></script>
-<script src="js/demo/chart-pie-demo.js"></script>
-<!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/js/demo/chart-area-demo.js"></script>
+<script src="/js/demo/chart-pie-demo.js"></script>
 
-<!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
-
-<!-- Page level plugins -->
-<script src="vendor/chart.js/Chart.min.js"></script>
-
-<!-- Page level custom scripts -->
-<script src="js/demo/chart-area-demo.js"></script>
-<script src="js/demo/chart-pie-demo.js"></script>
+<!-- wow JS
+    ============================================ -->
+<script src="/js/admin/wow.min.js"></script>
+<!-- price-slider JS
+    ============================================ -->
+<script src="/js/admin/jquery-price-slider.js"></script>
+<!-- meanmenu JS
+    ============================================ -->
+<script src="/js/admin/jquery.meanmenu.js"></script>
+<!-- owl.carousel JS
+    ============================================ -->
+<script src="/js/admin/owl.carousel.min.js"></script>
+<!-- sticky JS
+    ============================================ -->
+<script src="/js/admin/jquery.sticky.js"></script>
+<!-- scrollUp JS
+    ============================================ -->
+<script src="/js/admin/jquery.scrollUp.min.js"></script>
+<!-- mCustomScrollbar JS
+    ============================================ -->
+<script src="/js/admin/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="/js/admin/scrollbar/mCustomScrollbar-active.js"></script>
+<!-- metisMenu JS
+    ============================================ -->
+<script src="/js/admin/metisMenu/metisMenu.min.js"></script>
+<script src="/js/admin/metisMenu/metisMenu-active.js"></script>
+<!-- sparkline JS
+    ============================================ -->
+<script src="/js/admin/sparkline/jquery.sparkline.min.js"></script>
+<script src="/js/admin/sparkline/jquery.charts-sparkline.js"></script>
+<!-- calendar JS
+    ============================================ -->
+<script src="/js/admin/calendar/moment.min.js"></script>
+<script src="/js/admin/calendar/fullcalendar.min.js"></script>
+<script src="/js/admin/calendar/fullcalendar-active.js"></script>
+<!-- float JS
+    ============================================ -->
+<script src="/js/admin/flot/jquery.flot.js"></script>
+<script src="/js/admin/flot/jquery.flot.resize.js"></script>
+<script src="/js/admin/flot/curvedLines.js"></script>
+<script src="/js/admin/flot/flot-active.js"></script>
+<!-- plugins JS
+    ============================================ -->
+<script src="/js/admin/plugins.js"></script>
+<!-- main JS
+    ============================================ -->
+<script src="/js/admin/main.js"></script>
 <script>
-    /*var oEditors = [];
-    nhn.husky.EZCreator.createInIFrame({
-      oAppRef : oEditors,
-      elPlaceHolder : "smartEditor",
-      //저는 textarea의 id와 똑같이 적어줬습니다.
-      sSkinURI : "/se2/SmartEditor2Skin.html",
-      //경로를 꼭 맞춰주세요!
-      fCreator : "createSEditor2",
-      htParams : {
-        // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
-        bUseToolbar : true,
-        // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
-        bUseVerticalResizer : false,
-        // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
-        bUseModeChanger : true } });*/
-    function subForm(){
-        /*oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []);*/
-        var title = $("#title").val();
-        var content = $("#recipe").val();
-
-        /*      if($("#title").val().length<1||$("#content").val().length<1){
-                alert("빈칸없이 작성해주세요.");
-                return;
-              }*/
+    function updatePost(){
+        var id = [[${postResponse.id}]]
         $.ajax({
-            url: "/modifyPost/{id}",
+            url: "/updatePost/"+id,
             type:"PUT",
             data:
                 {
@@ -180,16 +191,17 @@
                     "content":content
                 },
             success: function (data) {
-                if(data=='success'){
-                    alert("레시피 등록 성공");
+                if(data === 'success'){
+                    alert("레시피 수정 성공");
                     location.href = "/goPost";
                 }else{
-                    alert("레시피 등록 실패");
+                    alert("레시피 수정 실패");
                 }
             }
         });
     }
 </script>
+
 </body>
 
 </html>

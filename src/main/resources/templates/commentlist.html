@@ -89,15 +89,17 @@
                         <thead>
                         <tr>
                             <th width ="10%">작성자</th>
-                            <th width ="70%">내용</th>
+                            <th width ="60%">내용</th>
                             <th width ="20%">작성일</th>
+                            <th width = "10%">제어</th>
                         </tr>
                         </thead>
                         <tfoot>
                         <tr>
                             <th width ="10%">작성자</th>
-                            <th width ="70%">내용</th>
+                            <th width ="60%">내용</th>
                             <th width ="20%">작성일</th>
+                            <th width = "10%">제어</th>
                         </tr>
                         </tfoot>
                         <tbody id="commentBody"> </tbody>
@@ -158,10 +160,12 @@
             success : function(data) {
                 let con = '';
                 for (let i = 0; i < data.length; i++){
+                    var id = data[i].id;
                     con += '<tr>';
                     con += '<td>' + data[i].writer + '</td>';
                     con += '<td>' + data[i].content +  '</td>';
                     con += '<td>' + data[i].created_date + '</td>';
+                    con += '<td>' + '<button onclick="commentDelete(${data[i].id})">'+"삭제"+'</button>' + '</td>'
                     con += '</tr>';
                 }
                 $('#commentBody').html(con);
@@ -169,6 +173,26 @@
             }
         });
     }
+</script>
+<script>
+    function commentDelete(commentId){
+        if (confirm("댓글을 삭제하시겠습니까?")){
+            $.ajax({
+                url:"/deleteComment/" + id,
+                type : "DELETE",
+                data: {'id': id},
+                success: function (data) {
+                    if (data === 'success') {
+                        alert("레시피를 삭제하였습니다");
+                        location.href = "/goPost";
+                    } else {
+                        alert("레시피 삭제를 실패하였습니다.")
+                    }
+                }
+            })
+        }
+    }
+
 </script>
 </body>
 </html>

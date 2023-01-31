@@ -35,7 +35,7 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
           <a href="/goPost" role="button" class="btn btn-info bi bi-arrow-return-left"> 목록</a>
-          <a href="/modifyPost/ + ${'postResponse.id+'}" role="button" class="btn btn-primary bi bi-pencil-square"> 수정</a>
+          <a role="button" id = "btn-post-modify" class="btn btn-primary bi bi-pencil-square"> 수정</a>
           <button type="button"  id="btn-delete" class="btn btn-danger bi bi-trash"> 삭제</button>
         </div>
         <!-- DataTales Example -->
@@ -58,6 +58,9 @@
                     <label for="title">제목 : <a th:text="${postResponse.title}"/>
                       <input type="hidden" id="title" value="{{postResponse.title}}"></label>
                   </th>
+                  <th>
+                    <label>추천 수 : <a th:text="${postResponse.recommend}"/></label>
+                  </th>
                 </tr>
                 <tr>
                   <th><label>작성자 : <a th:text="${postResponse.writer}"/></label></th>
@@ -69,7 +72,11 @@
               <div class="card-body">
                 <textarea rows="20" class="form-control" readonly>[[${postResponse.content}]]</textarea>
               </div>
+              <div>
+                <button id="recommend" class="btns btn_st3 btn_mid">추천</button>
+              </div>
             </div>
+
           </div>
           <head th:replace="/commentlist.html"></head>
 
@@ -131,14 +138,25 @@
     </div>
   </div>
 </div>
+
+<!-- Bootstrap core JavaScript-->
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
 <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/js/sb-admin-2.min.js"></script>
+
 <!-- Page level plugins -->
 <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
 <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="/js/demo/chart-area-demo.js"></script>
+<script src="/js/demo/chart-pie-demo.js"></script>
+
 <!-- wow JS
     ============================================ -->
 <script src="/js/admin/wow.min.js"></script>
@@ -186,17 +204,30 @@
 <!-- main JS
     ============================================ -->
 <script src="/js/admin/main.js"></script>
-<!-- Bootstrap core JavaScript-->
-<script src="/vendor/jquery/jquery.min.js"></script>
-<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-<!-- Core plugin JavaScript-->
-<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script>
+  $("#btn-post-modify").click(function () {
+    var id = [[${postResponse.id}]];
+    location.href = "/modifyPost/"+id;
+  })
+</script>
+<script>
+  $("#recommend").click(function () {
+    var id = [[${postResponse.id}]];
+    $.ajax({
+      url:"/recommendRecipe",
+      type: "PUT",
+      data: {
+        "postid" : id
+      },
+      success: function (data) {
+            alert("추천 성공")
+            location.href = "/goPost";
+      }
+    })
+  })
 
-<!-- Custom scripts for all pages-->
-<script src="/js/sb-admin-2.min.js"></script>
-
-
+</script>
 <script>
   $("#btn-comment-save").click(function () {
     var id=[[${postResponse.id}]];
@@ -212,7 +243,7 @@
       success: function (data) {
         if(data === 'success'){
           alert("댓글 등록 성공");
-          location.href = "/goPost";
+          location.href = "/goPost"
         }else{
           alert("댓글 등록 실패");
         }
@@ -220,13 +251,7 @@
     });
   })
 </script>
-<script>
-  $("#btn-comment-delete").click(function (){
 
-  })
-
-
-</script>
 <script>
   $("#btn-delete").click(function() {
     var id=[[${postResponse.id}]];

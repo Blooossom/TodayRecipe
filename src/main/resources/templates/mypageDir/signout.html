@@ -31,11 +31,6 @@
         <div id="content">
             <head th:replace="/common/header.html"></head>
             <div class="container-fluid">
-                <div>
-                    <label>비밀번호를 입력해주세요</label>
-                    <input type="text" id="password" name="password"  maxlength="50" cols="100" placeholder="비밀번호를 입력해주세요." />
-                    <button onclick="checkUser()"></button>
-                </div>
             </div>
         </div>
         <head th:replace="/common/footer.html"></head>
@@ -55,18 +50,19 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">로그아웃을 하시려면 로그아웃을 눌러 주세요</div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                <a class="btn btn-primary" href="/goLogout">로그아웃</a>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="login.html">Logout</a>
             </div>
         </div>
     </div>
+    </head>
 </div>
 <!-- Bootstrap core JavaScript-->
 <script src="/vendor/jquery/jquery.min.js"></script>
@@ -133,30 +129,6 @@
 <!-- main JS
     ============================================ -->
 <script src="/js/admin/main.js"></script>
-<script>
-    function checkUser(){
-        var password = $("#password").val();
-        $.ajax({
-            url: "/checkUser",
-            type: "POST",
-            data:
-                {
-                    "password":password
-                },
-            success: function (data) {
-                if(data === 'success'){
-                    alert("유저 확인 성공");
-                    location.href = "/goChangeInfo";
-                }else{
-                    alert("유저 확인 실패");
-                }
-            }
-        });
 
-    }
-
-
-</script>
 </body>
-
 </html>
