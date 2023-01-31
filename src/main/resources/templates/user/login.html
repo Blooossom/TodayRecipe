@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>회원 가입</title>
+    <title>로그인 하기</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -26,61 +26,67 @@
 
 <div class="container">
 
-    <div class="card o-hidden border-0 shadow-lg my-5">
-        <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-                <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-                <div class="col-lg-7">
-                    <div class="p-5">
-                        <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">회원 가입</h1>
-                        </div>
-                        <form class="user">
-                            <div class="form-group row">
-                            </div><div class="form-group">
-                            <input type="userid" class="form-control form-control-user" required name="userid" id="userid"
-                                   placeholder="ID를 입력해주세요">
-                        </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control form-control-user" required name="password" id="password"
-                                       placeholder="비밀번호를 입력해주세요">
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+        <div class="col-xl-10 col-lg-12 col-md-9">
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="row">
+                        <div class="col-lg-6 d-none d-lg-block" style = "background-image: url(../../static/img/KakaoTalk_20230116_210016597_03.jpg); background-size: cover; background-position: center"></div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">로그인</h1>
+                                    </div>
+                                    <form class="user">
+                                        <div class="form-group">
+                                        <input type="userid" class="form-control form-control-user"
+                                               id="userid" required name="userid"
+                                               placeholder="Enter userid">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control form-control-user"
+                                               id="password" required name="password" placeholder="Password">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox small">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck">
+                                            <label class="custom-control-label" for="customCheck">로그인 정보 기억하기</label>
+                                        </div>
+                                    </div>
+                                    <a class="btn btn-primary btn-user btn-block" onclick="login()">
+                                        로그인
+                                    </a><a href="/goSignUp" class="btn btn-primary btn-user btn-block">
+                                    회원가입
+                                </a>
+                                    <hr>
+                                    <a href="../index.html" class="btn btn-google btn-user btn-block">
+                                        <i class="fab fa-google fa-fw"></i> Google로 로그인
+                                    </a>
+                                    <a href="../index.html" class="btn btn-facebook btn-user btn-block">
+                                        <i class="fab fa-facebook-f fa-fw"></i> Facebook으로 로그인
+                                    </a>
+                                </form>
+                                <hr>
+                                <div class="text-center">
+                                    <a class="small" href="forgot-password.html">비밀번호를 잊어버리셨나요?</a>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <input type="email" class="form-control form-control-user" required name = "email" id="email"
-                                       placeholder="이메일 주소를 입력해주세요">
-                            </div>
-                            <div class="form-group">
-                                <input type="nickname" class="form-control form-control-user" required name="nickname" id="nickname"
-                                       placeholder="닉네임을 입력해주세요">
-                            </div>
-                            <div class="form-group">
-                                <input type="address" class="form-control form-control-user" required name="address" id="address"
-                                       placeholder="주소를 입력해주세요">
-                            </div>
-                            <a class="btn btn-primary btn-user btn-block" onclick="signUp()">
-                                회원 가입 하기
-                            </a>
-                            <hr>
-                            <a href="index.html" class="btn btn-google btn-user btn-block">
-                                <i class="fab fa-google fa-fw"></i> Google로 회원가입 하기
-                            </a>
-                            <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                <i class="fab fa-facebook-f fa-fw"></i> Facebook으로 회원가입 하기
-                            </a>
-                        </form>
-                        <hr>
-                        <div class="text-center">
-                            <a class="small" href="/goLogin">이미 계정이 있으신가요?</a>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
+
     </div>
 
 </div>
 
+<!-- Bootstrap core JavaScript-->
 <!-- Bootstrap core JavaScript-->
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -145,34 +151,28 @@
 <script src="/js/admin/plugins.js"></script>
 <!-- main JS
     ============================================ -->
-<script src="/js/admin/main.js"></script>
+<script src="/js/admin/main.js"></script><script>
 
-<script>
-    function signUp() {
+    function login() {
         $.ajax({
-            url : '/signup',
+            url : '/login',
             data : {
-                userid : $('#userid').val(),
-                password : $('#password').val(),
-                email : $('#email').val(),
-                nickname : $('#nickname').val(),
-                address : $('#address').val()
+                'userid' : $("#userid").val(),
+                'password' : $("#password").val()
             },
             type : 'POST',
             success : function (resp) {
                 if (resp === 'success') {
-                    alert("회원가입에 성공하였습니다.")
-                    location.href = "/goLogin";
-                } else {
-                    alert("입력 정보를 다시 한 번 확인해주세요.")
+                    alert("로그인에 성공하셨습니다!")
+                    location.href = '/goMain'
                 }
+                else {
+                    alert("아이디와 비밀번호를 확인해주세요.")
+                }
+
             }
         });
     }
-
-
-
-
 </script>
 
 </body>

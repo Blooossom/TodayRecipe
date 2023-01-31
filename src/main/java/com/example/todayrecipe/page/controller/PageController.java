@@ -1,7 +1,5 @@
 package com.example.todayrecipe.page.controller;
 
-import com.example.todayrecipe.post.dto.PostRequest;
-import com.example.todayrecipe.post.dto.PostResponse;
 import com.example.todayrecipe.post.service.PostService;
 import com.example.todayrecipe.user.dto.UserRequest;
 import com.example.todayrecipe.user.entity.User;
@@ -13,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
@@ -74,7 +71,7 @@ public class PageController {
 
 
     @ApiOperation(value = "마이페이지 이동", notes = "현재 로그인 된 회원의 마이 페이지 이동")
-    @GetMapping("/myPage/{userid}")
+    @GetMapping("/goMyPage")
     public String goMyPage(@ApiIgnore HttpSession session){
         String userId = String.valueOf(session.getAttribute("userid"));
         //스케쥴에 사용한 기능 추가
