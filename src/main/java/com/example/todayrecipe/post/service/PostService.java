@@ -3,6 +3,7 @@ package com.example.todayrecipe.post.service;
 
 import com.example.todayrecipe.post.dto.PostRequest;
 import com.example.todayrecipe.post.dto.PostResponse;
+import com.example.todayrecipe.post.dto.PostUpdate;
 import com.example.todayrecipe.post.entity.Post;
 
 import java.util.List;
@@ -13,6 +14,10 @@ public interface PostService {
     //레시피 게시판 이동 시 게시글 출력
     List<PostResponse> selectPostList();
 
+    List<PostResponse> selectRecommendList();
+
+    List<PostResponse> selectPostListByUserid(String userId);
+
     //레시피 작성할 때
     String addPost(PostRequest request, String user_id);
 
@@ -21,10 +26,11 @@ public interface PostService {
 
     String deletePost(Long postId);
 
-    String updatePost(Long postId);
+    String updatePost(PostRequest request, String id);
 
     int updateView(Long id);
 
+    int updateRecommend(Long id);
     PostResponse getPost(Long postId);
 
 }

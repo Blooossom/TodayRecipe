@@ -19,6 +19,7 @@ public class PostResponse {
     private String content;
     private String writer;
     private int view;
+    private int recommend;
     private String created_date;
     private String modified_date;
     private User user;
@@ -29,10 +30,9 @@ public class PostResponse {
         this.content = post.getContent();
         this.writer = post.getWriter();
         this.view = post.getView();
-        this.created_date = post.getCreated_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        this.modified_date = post.getModified_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        /*this.created_date = post.getCreated_date();
-        this.modified_date = post.getModified_date();*/
+        this.recommend = post.getRecommend();
+        this.created_date = post.getCreated_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        this.modified_date = post.getModified_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 
 

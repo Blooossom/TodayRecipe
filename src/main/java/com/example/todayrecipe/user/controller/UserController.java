@@ -34,6 +34,12 @@ public class UserController {
         return result;
     }
 
+    @PostMapping("/checkUser")
+    public String checkUser(HttpSession session, String password){
+        String userId = session.getAttribute("userid").toString();
+        return service.checkUser(userId, password);
+    }
+
     @ApiOperation(value = "회원가입", notes = "유효성, 중복검사 후 문제 없을 경우 회원가입 시키는 API")
     @PostMapping("/signup")
     public String signUp(@Valid UserRequest req, Errors errors, Model model){

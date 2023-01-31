@@ -3,6 +3,7 @@ package com.example.todayrecipe.comment.entity;
 
 import com.example.todayrecipe.post.entity.Post;
 import com.example.todayrecipe.user.entity.User;
+import com.example.todayrecipe.util.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Getter
-public class Comment {
+public class Comment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,12 +30,6 @@ public class Comment {
     @Column
     private String writer;
 
-    @Column
-    private String created_date;
-
-    @Column
-    private String modified_date;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -46,7 +41,6 @@ public class Comment {
 
     public void update(String content){
         this.content = content;
-        this.modified_date = modified_date;
     }
 
 }

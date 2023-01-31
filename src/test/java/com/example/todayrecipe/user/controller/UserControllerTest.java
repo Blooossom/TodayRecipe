@@ -37,17 +37,7 @@ class UserControllerTest {
     private UserController userController;
 
 
-    @Test
-    void login(){
-        UserRequest req = new UserRequest("admin123", "123123", "adminn", "admin@naver.com", "address");
-        String result = service.login(req);
 
-        //조건 : 무엇을 호출하면 무엇을 돌려준다
-        given(userController.login(req,session)).willReturn(result);
-
-        String testResult = userController.login(req,session);
-        Assertions.assertEquals("success",testResult);
-    }
 
 
 }

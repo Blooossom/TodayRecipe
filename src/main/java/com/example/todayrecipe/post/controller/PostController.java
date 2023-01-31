@@ -3,6 +3,7 @@ package com.example.todayrecipe.post.controller;
 
 import com.example.todayrecipe.post.dto.PostRequest;
 import com.example.todayrecipe.post.dto.PostResponse;
+import com.example.todayrecipe.post.dto.PostUpdate;
 import com.example.todayrecipe.post.entity.Post;
 import com.example.todayrecipe.post.service.PostService;
 import io.swagger.annotations.Api;
@@ -13,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -20,6 +23,18 @@ import java.util.List;
 public class PostController {
 
     private final PostService service;
+
+    @GetMapping("/recommendRecipeList")
+    public List<PostResponse> viewRecommendRecipe() {
+        return service.selectRecommendList();
+    }
+
+    @GetMapping("/goMyPostList")
+    public List<PostResponse> viewPostListByUser(HttpSession session){
+        String userId = (session.getAttribute("userid").toString());
+        return service.selectPostListByUserid(userId);
+    }
+
 
     @ApiOperation(value = "게시글 전체 조회", notes = "게시글 전부 가져오는 API")
     @GetMapping("/viewPostList")
@@ -57,11 +72,25 @@ public class PostController {
         return service.viewPost(postId);
     }
 
+    @Transactional
     @ApiOperation(value = "게시글 수정", notes = "게시글을 수정하는 API")
-    @PutMapping("/updatePost")
-    public String modifiedPost(@RequestParam Long id){
-        return service.updatePost(id);
+    @PutMapping("/updatePost/{id}")
+    public String updatePost(@PathVariable String id, PostRequest request, Model model) {
+        try{
+            System.out.println(id);
+            System.out.println(request.toString());
+            service.updatePost(request, id);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return "failed";
+        }
+        return "success";
     }
 
+    @PutMapping("/recommendRecipe")
+    public void recommend(Long id) {
+        service.updateRecommend(id);
+    }
 
 }

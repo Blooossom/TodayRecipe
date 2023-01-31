@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +33,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String checkUser(String userId, String password) {
+            User user = repo.findUserByUserid(userId).orElse(null);
+            if (user.getPassword().equals(password)) {
+                return "success";
+            }
+            return "failed";
+    }
+
+    @Override
     public String login(UserRequest req) {
         User user = repo.findByUseridAndPassword(req.getUserid(), req.getPassword())
                 .orElse(null);
@@ -42,6 +52,7 @@ public class UserServiceImpl implements UserService {
             return "failed";
         }
     }
+
 
     @Override
     @Transactional(readOnly = true)

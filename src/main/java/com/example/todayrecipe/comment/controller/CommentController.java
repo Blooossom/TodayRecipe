@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -29,9 +30,15 @@ public class CommentController {
     @GetMapping("/viewComment")
     public List<CommentResponse> selectComment(HttpSession session){
         Long post_id = Long.valueOf(String.valueOf(session.getAttribute("post_id")));
-        System.out.println(service.viewCommentList(post_id));
         return  service.viewCommentList(post_id);
     }
+
+    @GetMapping("/goMyCommentList")
+    public List<CommentResponse> selectMyCommentList(HttpSession session) {
+        String userid = session.getAttribute("userid").toString();
+        return service.viewMyComment(userid);
+    }
+
 
     @ApiOperation(value = "댓글 작성", notes = "댓글을 작성하는 API")
     @ApiImplicitParams({
@@ -53,10 +60,10 @@ public class CommentController {
     public String modifyComment(Long commentId, CommentRequest request){
         return service.modifyComment(commentId, request);
     }
-
+    @Transactional
     @ApiOperation(value = "댓글 삭제", notes = "댓글을 삭제하는 API")
-    @DeleteMapping("/deleteComment")
-    public String deleteComment(Long commentId){
+    @DeleteMapping("/deleteComment/{id}")
+    public String deleteComment(@PathVariable("id") Long commentId){
         return service.deleteComment(commentId);
     }
 }

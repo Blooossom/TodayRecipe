@@ -12,6 +12,7 @@ import com.example.todayrecipe.user.entity.User;
 import com.example.todayrecipe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +34,16 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public List<CommentResponse> viewMyComment(String userId) {
+        User user = userRepo.findUserByUserid(userId).orElse(null);
+        Long id = user.getId();
+        return repo.findAllByUserId(id)
+                .stream()
+                .map(CommentResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public String addComment(CommentRequest commentRequest, Long post_id, String userid) {
         try {
             Post post = postRepo.findPostById(post_id);
@@ -42,8 +53,6 @@ public class CommentServiceImpl implements CommentService {
                     .user(user)
                     .writer(user.getNickname())
                     .content(commentRequest.getContent())
-                    .created_date("2023-01-17")
-                    .modified_date("2023-01-17")
                     .build());
         }catch (Exception err) {
             err.printStackTrace();
@@ -51,7 +60,7 @@ public class CommentServiceImpl implements CommentService {
         }
         return "success";
     }
-
+    @Transactional
     @Override
     public String deleteComment(Long comment_id) {
         try{

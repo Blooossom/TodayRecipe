@@ -1,7 +1,9 @@
 package com.example.todayrecipe.post.service.impl;
 
+import com.example.todayrecipe.post.dto.PostEditor;
 import com.example.todayrecipe.post.dto.PostRequest;
 import com.example.todayrecipe.post.dto.PostResponse;
+import com.example.todayrecipe.post.dto.PostUpdate;
 import com.example.todayrecipe.post.entity.Post;
 import com.example.todayrecipe.post.repository.PostRepository;
 import com.example.todayrecipe.post.service.PostService;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,8 +32,35 @@ public class PostServiceImpl implements PostService {
         List<PostResponse> responseList = repo.findAll().stream()
                 .map(PostResponse::new).collect(Collectors.toList());
         for (int i = 0; i < responseList.size(); i++) {
-            System.out.println(responseList.get(i).getCreated_date());
+            System.out.println(responseList.get(i).toString());
         }
+        return responseList;
+    }
+
+    @Override
+    public List<PostResponse> selectRecommendList(){
+        List<PostResponse> responseList = repo.findAll().stream()
+                .map(PostResponse::new).collect(Collectors.toList());
+        Collections.sort(responseList, (o1, o2) -> {
+            if (o1.getRecommend() > o2.getRecommend()) {
+                return -1;
+            }
+            else if (o1.getRecommend() == o2.getRecommend()) {
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        });
+        return responseList;
+    }
+
+    @Override
+    public List<PostResponse> selectPostListByUserid(String userId) {
+        User user = userRepo.findUserByUserid(userId).orElse(null);
+        Long id = user.getId();
+        List<PostResponse> responseList = repo.findAllByUserId(id).stream()
+                .map(PostResponse::new).collect(Collectors.toList());
         return responseList;
     }
 
@@ -72,11 +103,17 @@ public class PostServiceImpl implements PostService {
         return "success";
     }
 
+    @Transactional
     @Override
-    public String updatePost(Long postId) {
+    public String updatePost(PostRequest request, String id) {
+        Post post = repo.findPostById(Long.valueOf(id));
         try{
-            Post post = repo.findPostById(postId);
-            post.update(post.getTitle(), post.getContent());
+           repo.save(Post.builder()
+                           .id(post.getId())
+                           .title(request.getTitle())
+                           .writer(post.getWriter())
+                           .content(request.getContent())
+                   .build());
         } catch (Exception err){
             err.printStackTrace();
             return "failed";
@@ -87,6 +124,12 @@ public class PostServiceImpl implements PostService {
     @Override
     public int updateView(Long id) {
         return repo.updateView(id);
+    }
+
+    @Transactional
+    @Override
+    public int updateRecommend(Long id) {
+      return repo.updateRecommend(id);
     }
     @Override
     @Transactional

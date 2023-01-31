@@ -29,6 +29,7 @@ public class PostRequest {
                 .writer(writer)
                 .content(content)
                 .view(0)
+                .recommend(0)
                 .build();
     }
 }

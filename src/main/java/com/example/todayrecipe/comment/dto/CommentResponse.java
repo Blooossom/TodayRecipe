@@ -5,6 +5,8 @@ import com.example.todayrecipe.post.entity.Post;
 import com.example.todayrecipe.user.entity.User;
 import lombok.*;
 
+import java.time.format.DateTimeFormatter;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,7 +25,7 @@ public class CommentResponse {
         this.id = comment.getId();
         this.writer = comment.getWriter();
         this.content = comment.getContent();
-        this.created_date = comment.getCreated_date();
-        this.modified_date = comment.getModified_date();
+        this.created_date = comment.getCreated_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        this.modified_date = comment.getModified_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));;
     }
 }
