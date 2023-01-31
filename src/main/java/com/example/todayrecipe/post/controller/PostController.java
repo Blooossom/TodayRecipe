@@ -89,8 +89,9 @@ public class PostController {
     }
 
     @PutMapping("/recommendRecipe")
-    public void recommend(Long id) {
-        service.updateRecommend(id);
+    public void recommend(Long postid) {
+        System.out.println(postid);
+        service.updateRecommend(postid);
     }
 
 }

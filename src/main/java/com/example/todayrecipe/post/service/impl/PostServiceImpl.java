@@ -59,9 +59,8 @@ public class PostServiceImpl implements PostService {
     public List<PostResponse> selectPostListByUserid(String userId) {
         User user = userRepo.findUserByUserid(userId).orElse(null);
         Long id = user.getId();
-        List<PostResponse> responseList = repo.findAllByUserId(id).stream()
+        return repo.findAllByUserId(id).stream()
                 .map(PostResponse::new).collect(Collectors.toList());
-        return responseList;
     }
 
     @Override
