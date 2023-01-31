@@ -42,11 +42,6 @@ public class Post extends BaseTimeEntity {
     @Column(columnDefinition = "integer default 0")
     private int recommend;
 
-    /*@Column
-    private LocalDateTime created_date;
-
-    @Column
-    private LocalDateTime modified_date;*/
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
