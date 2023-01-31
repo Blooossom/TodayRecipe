@@ -39,19 +39,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostResponse> selectRecommendList(){
-        List<PostResponse> responseList = repo.findAll().stream()
+        List<PostResponse> responseList = repo.findAllByOrderByRecommendDesc().stream()
                 .map(PostResponse::new).collect(Collectors.toList());
-        Collections.sort(responseList, (o1, o2) -> {
-            if (o1.getRecommend() > o2.getRecommend()) {
-                return -1;
-            }
-            else if (o1.getRecommend() == o2.getRecommend()) {
-                return 0;
-            }
-            else {
-                return 1;
-            }
-        });
+
         return responseList;
     }
 
@@ -72,8 +62,6 @@ public class PostServiceImpl implements PostService {
                     .title(request.getTitle())
                     .writer(user.getNickname())
                     .content(request.getContent())
-                    /*.created_date("2023-01-17") //바꿔야 함ㅇㅇ
-                    .modified_date("2023-01-17") //이것도*/
                     .view(0)
                     .build()
             );
@@ -104,12 +92,14 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public String updatePost(PostRequest request, String id) {
-        Post post = repo.findPostById(Long.valueOf(id));
+    public String updatePost(PostRequest request) {
+        Post post = repo.findPostById(request.getId());
         try{
            repo.save(Post.builder()
                            .id(post.getId())
                            .title(request.getTitle())
+                           .view(post.getView())
+                           .recommend(post.getRecommend())
                            .writer(post.getWriter())
                            .content(request.getContent())
                    .build());

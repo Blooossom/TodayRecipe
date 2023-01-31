@@ -17,6 +17,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     String deletePostById(Long post_id);
 
+    List<Post> findAllByOrderByRecommendDesc();
+
     @Modifying
     @Query("update Post post set post.view = post.view + 1 where post.id = :id")
     int updateView(Long id);

@@ -182,11 +182,13 @@
 <script>
     function updatePost(){
         var id = [[${postResponse.id}]]
+        var title = $("#title").val();
+        var content = $("#recipe").val();
         $.ajax({
-            url: "/updatePost/"+id,
+            url: "/updatePost",
             type:"PUT",
             data:
-                {
+                {   "id" : id,
                     "title":title,
                     "content":content
                 },

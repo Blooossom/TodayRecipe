@@ -26,6 +26,7 @@ public class PostController {
 
     @GetMapping("/recommendRecipeList")
     public List<PostResponse> viewRecommendRecipe() {
+        System.out.println(service.selectRecommendList());
         return service.selectRecommendList();
     }
 
@@ -74,12 +75,10 @@ public class PostController {
 
     @Transactional
     @ApiOperation(value = "게시글 수정", notes = "게시글을 수정하는 API")
-    @PutMapping("/updatePost/{id}")
-    public String updatePost(@PathVariable String id, PostRequest request, Model model) {
+    @PutMapping("/updatePost")
+    public String updatePost(PostRequest request) {
         try{
-            System.out.println(id);
-            System.out.println(request.toString());
-            service.updatePost(request, id);
+            service.updatePost(request);
         }
         catch (Exception e) {
             e.printStackTrace();

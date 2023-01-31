@@ -26,7 +26,7 @@ public interface PostService {
 
     String deletePost(Long postId);
 
-    String updatePost(PostRequest request, String id);
+    String updatePost(PostRequest request);
 
     int updateView(Long id);
 
