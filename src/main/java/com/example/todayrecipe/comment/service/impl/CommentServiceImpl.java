@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,9 +63,18 @@ public class CommentServiceImpl implements CommentService {
     }
     @Transactional
     @Override
-    public String deleteComment(Long comment_id) {
+    public String deleteComment(Long comment_id, String userId) {
         try{
-            repo.deleteCommentById(comment_id);
+            User user = userRepo.findUserByUserid(userId).orElse(null);
+            Comment comment = repo.findCommentById(comment_id);
+            Long user_Id = user.getId();
+            Long commentId = comment.getUser().getId();
+            if (!user_Id.equals(commentId)) {
+                return "failed";
+            }
+            else {
+                repo.deleteCommentById(comment_id);
+            }
         }catch (Exception err) {
             err.printStackTrace();
             return "failed";
@@ -72,6 +82,7 @@ public class CommentServiceImpl implements CommentService {
         return "success";
     }
 
+    @Transactional
     @Override
     public String modifyComment(Long comment_id, CommentRequest request) {
         try{

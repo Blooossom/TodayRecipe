@@ -24,9 +24,9 @@ public interface PostService {
     //게시글을 눌렀을 때, 게시글을 출력해 줌
     PostResponse viewPost(Long postId);
 
-    String deletePost(Long postId);
+    String deletePost(Long postId, String userId);
 
-    String updatePost(PostRequest request);
+    String updatePost(PostRequest request, String userId);
 
     int updateView(Long id);
 

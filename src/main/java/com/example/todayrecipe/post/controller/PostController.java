@@ -61,9 +61,9 @@ public class PostController {
     @Transactional
     @ApiOperation(value = "게시글 삭제", notes = "게시글을 삭제하는 API")
     @DeleteMapping("/deletePost")
-    public String deletePost(@RequestParam String id){
-        System.out.println(id);
-        return service.deletePost(Long.valueOf(id));
+    public String deletePost(@RequestParam String id, HttpSession session){
+        String userId = String.valueOf(session.getAttribute("userid"));
+        return service.deletePost(Long.valueOf(id), userId);
     }
 
     @GetMapping("/selectPost")
@@ -76,9 +76,10 @@ public class PostController {
     @Transactional
     @ApiOperation(value = "게시글 수정", notes = "게시글을 수정하는 API")
     @PutMapping("/updatePost")
-    public String updatePost(PostRequest request) {
+    public String updatePost(PostRequest request, HttpSession session) {
+        String userId = String.valueOf(session.getAttribute("userId"));
         try{
-            service.updatePost(request);
+            service.updatePost(request, userId);
         }
         catch (Exception e) {
             e.printStackTrace();

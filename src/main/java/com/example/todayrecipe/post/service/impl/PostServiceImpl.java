@@ -80,8 +80,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public String deletePost(Long postId) {
+    public String deletePost(Long postId, String userId) {
         try {
+            User user = userRepo.findUserByUserid(userId).orElse(null);
+            Long postUserId = repo.findPostById(postId).getUser().getId();
+            if (!postUserId.equals(user.getId())) {
+                return "failed";
+            }
             repo.deletePostById(postId);
         } catch (Exception err) {
             err.printStackTrace();
@@ -92,8 +97,12 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public String updatePost(PostRequest request) {
+    public String updatePost(PostRequest request, String userId) {
         Post post = repo.findPostById(request.getId());
+        User user = userRepo.findUserByUserid(userId).orElse(null);
+        if (!user.getId().equals(post.getUser().getId())){
+            return "failed";
+        }
         try{
            repo.save(Post.builder()
                            .id(post.getId())

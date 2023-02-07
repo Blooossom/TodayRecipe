@@ -5,12 +5,14 @@ import com.example.todayrecipe.comment.dto.CommentResponse;
 import com.example.todayrecipe.comment.repository.CommentRepository;
 import com.example.todayrecipe.comment.service.CommentService;
 import com.example.todayrecipe.post.dto.PostRequest;
+import com.example.todayrecipe.user.entity.User;
 import com.example.todayrecipe.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +38,11 @@ public class CommentController {
     @GetMapping("/goMyCommentList")
     public List<CommentResponse> selectMyCommentList(HttpSession session) {
         String userid = session.getAttribute("userid").toString();
+        System.out.println(userid);
+        for (int i = 0; i < service.viewMyComment(userid).size(); i++) {
+            System.out.println(service.viewMyComment(userid).get(i).getPost().getId());
+            System.out.println(service.viewMyComment(userid).get(i));
+        }
         return service.viewMyComment(userid);
     }
 
@@ -62,8 +69,10 @@ public class CommentController {
     }
     @Transactional
     @ApiOperation(value = "댓글 삭제", notes = "댓글을 삭제하는 API")
-    @DeleteMapping("/deleteComment/{id}")
-    public String deleteComment(@PathVariable("id") Long commentId){
-        return service.deleteComment(commentId);
+    @DeleteMapping("/deleteComment")
+    public String deleteComment(Long id, HttpSession session){
+        String userid = session.getAttribute("userid").toString();
+        return service.deleteComment(id, userid);
+
     }
 }
