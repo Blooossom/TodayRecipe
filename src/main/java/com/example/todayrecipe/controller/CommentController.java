@@ -1,17 +1,21 @@
 package com.example.todayrecipe.controller;
 
-import com.example.todayrecipe.dto.comment.CommentRequest;
+import com.example.todayrecipe.dto.comment.CommentReqDTO;
 import com.example.todayrecipe.dto.comment.CommentResponse;
+import com.example.todayrecipe.dto.comment.UpdateCommentReqDTO;
 import com.example.todayrecipe.service.CommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 
 @Api(tags = {"댓글 컨트롤러"}, description = "댓글 기본 CRUD, 비밀댓글, 작성자 및 게시글 작성자만 확인가능 등")
@@ -50,7 +54,7 @@ public class CommentController {
             @ApiImplicitParam(name = "post_id", value = "게시글 식별 ID", required = true)
     })
     @PostMapping("/addComment")
-    public String addComment(CommentRequest request, Long postid, HttpSession session) {
+    public String addComment(CommentReqDTO request, Long postid, HttpSession session) {
         String userid = String.valueOf(session.getAttribute("userid"));
         System.out.println(request.getContent());
         System.out.println(userid);
@@ -59,8 +63,10 @@ public class CommentController {
 
     @ApiOperation(value = "댓글 수정", notes = "댓글 수정하는 API")
     @PutMapping("/updateComment")
-    public String modifyComment(Long commentId, CommentRequest request){
-        return service.modifyComment(commentId, request);
+    public ResponseEntity<String> modifyComment(@RequestBody UpdateCommentReqDTO reqDTO, @RequestBody HashMap<String, Object> map){
+        Long commentNo = Long.valueOf(map.get("commentNo").toString());
+        String message = service.updateComment(reqDTO, commentNo);
+        return new ResponseEntity<>(message, message.equals("success")? HttpStatus.OK:HttpStatus.BAD_REQUEST);
     }
     @Transactional
     @ApiOperation(value = "댓글 삭제", notes = "댓글을 삭제하는 API")
