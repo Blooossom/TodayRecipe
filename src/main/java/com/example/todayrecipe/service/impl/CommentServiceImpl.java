@@ -1,7 +1,8 @@
 package com.example.todayrecipe.service.impl;
 
-import com.example.todayrecipe.dto.comment.CommentRequest;
+import com.example.todayrecipe.dto.comment.CommentReqDTO;
 import com.example.todayrecipe.dto.comment.CommentResponse;
+import com.example.todayrecipe.dto.comment.UpdateCommentReqDTO;
 import com.example.todayrecipe.entity.Comment;
 import com.example.todayrecipe.repository.CommentRepository;
 import com.example.todayrecipe.entity.Post;
@@ -43,7 +44,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public String addComment(CommentRequest commentRequest, Long post_id, String userid) {
+    public String addComment(CommentReqDTO commentReqDTO, Long post_id, String userid) {
         try {
             Post post = postRepo.findPostById(post_id);
             User user = userRepo.findUserByUserid(userid).orElse(null);
@@ -51,7 +52,7 @@ public class CommentServiceImpl implements CommentService {
                     .post(post)
                     .user(user)
                     .writer(user.getNickname())
-                    .content(commentRequest.getContent())
+                    .content(commentReqDTO.getContent())
                     .build());
         }catch (Exception err) {
             err.printStackTrace();
@@ -64,7 +65,7 @@ public class CommentServiceImpl implements CommentService {
     public String deleteComment(Long comment_id, String userId) {
         try{
             User user = userRepo.findUserByUserid(userId).orElse(null);
-            Comment comment = repo.findCommentById(comment_id);
+            Comment comment = repo.findByCommentNo(comment_id);
             Long user_Id = user.getId();
             Long commentId = comment.getUser().getId();
             if (!user_Id.equals(commentId)) {
@@ -80,17 +81,17 @@ public class CommentServiceImpl implements CommentService {
         return "success";
     }
 
-    @Transactional
     @Override
-    public String modifyComment(Long comment_id, CommentRequest request) {
-        try{
-            Comment comment = repo.findCommentById(comment_id);
-            comment.update(request.getContent());
-        }catch (Exception err){
-            err.printStackTrace();
-            return "failed";
+    public String updateComment(UpdateCommentReqDTO reqDTO, Long commentNo) {
+        Comment comment = repo.findByCommentNo(commentNo);
+        String content = reqDTO.getContent();
+        if (content == null || content.isBlank()) {
+            content = comment.getContent();
         }
-        return "success";
+        Integer result = repo.updateComment(content, commentNo);
+        return result > 0? "success":"failed";
     }
+
+
 
 }
