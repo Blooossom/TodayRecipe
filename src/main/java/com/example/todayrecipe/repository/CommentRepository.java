@@ -1,7 +1,12 @@
 package com.example.todayrecipe.repository;
 
+import com.example.todayrecipe.dto.comment.UpdateCommentReqDTO;
 import com.example.todayrecipe.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,6 +20,10 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     String deleteCommentById(Long comment_id);
 
-    Comment findCommentById(Long comment_id);
+    Comment findByCommentNo(Long commentNo);
+
+    @Modifying
+    @Query(value = "UPDATE comment c SET c.content =:content WHERE c.commentNo =:commentNo", nativeQuery = true)
+    Integer updateComment(@Param("content") String content, @Param("commentNo") Long commentNo);
     
 }
