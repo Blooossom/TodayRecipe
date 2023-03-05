@@ -10,19 +10,17 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UserResponse {
+public class UserResDTO {
 
     private Long id;
-    private String userId;
     private String nickname;
     private String email;
     private String indate;
     private Post post;
     private Comment comment;
 
-    public UserResponse (User user){
+    public UserResDTO(User user){
         this.id = user.getId();
-        this.userId = user.getUserid();
         this.email = user.getEmail();
         this.indate = user.getIndate();
     }

@@ -18,10 +18,8 @@ import java.util.Collections;
 @Setter
 @ToString
 @Builder
-public class UserRequest {
+public class UserReqDTO {
 
-    @NotBlank(message = "아이디는 필수 입력 사항입니다.")
-    private String userid;
 
     @NotBlank(message = "비밀번호는 필수 입력 사항입니다.")
     //@Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}", message = "비밀번호는 8 ~ 16글자의 영문 대소문자, 숫자, 특수문자를 사용하세요.")
@@ -42,7 +40,6 @@ public class UserRequest {
 
     public User toEntity() {
         return User.builder()
-                .userid(userid)
                 .password(password)
                 .nickname(nickname)
                 .email(email)
@@ -52,7 +49,7 @@ public class UserRequest {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
     }
-    public UserRequest(Claims claims) {
+    public UserReqDTO(Claims claims) {
         this.email = claims.get("email", String.class);
     }
 

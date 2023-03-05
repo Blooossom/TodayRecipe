@@ -21,23 +21,26 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "userid")
-    private String userid;
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "password")
     private String password;
 
+    @Column
+    private String name;
+
     @Column(name = "nickname")
     private String nickname;
-
-    @Column(name = "email")
-    private String email;
 
     @Column(name = "address")
     private String address;
 
     @Column(name = "indate")
     private String indate;
+
+    @Column(name = "role")
+    private String role;
 
     @OneToMany(fetch = FetchType.LAZY)
     @OrderBy("created_date DESC")
