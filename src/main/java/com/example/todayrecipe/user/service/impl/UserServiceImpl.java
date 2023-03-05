@@ -24,11 +24,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public String signUp(UserRequest req) {
         try {
+            checkUserIdDuplication(req);
+            checkNickNameDuplication(req);
+            checkEmailDuplication(req);
             repo.save(req.toEntity());
         } catch (Exception err) {
             err.printStackTrace();
             return "failed";
         }
+
         return "success";
     }
 
@@ -39,6 +43,19 @@ public class UserServiceImpl implements UserService {
                 return "success";
             }
             return "failed";
+    }
+
+    @Transactional
+    @Override
+    public String signOut(String userId) {
+        try {
+            User user = repo.findUserByUserid(userId).orElse(null);
+            repo.deleteById(user.getId());
+        }catch (Exception err) {
+            err.printStackTrace();
+            return "failed";
+        }
+        return "success";
     }
 
     @Override

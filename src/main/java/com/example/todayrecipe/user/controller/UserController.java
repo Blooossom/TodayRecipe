@@ -6,11 +6,11 @@ import com.example.todayrecipe.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
@@ -42,27 +42,9 @@ public class UserController {
 
     @ApiOperation(value = "회원가입", notes = "유효성, 중복검사 후 문제 없을 경우 회원가입 시키는 API")
     @PostMapping("/signup")
-    public String signUp(@Valid UserRequest req, Errors errors, Model model){
-        try {
-            service.checkUserIdDuplication(req);
-            service.checkNickNameDuplication(req);
-            service.checkEmailDuplication(req);
-        } catch (Exception err) {
-            err.printStackTrace();
-            return "failed";
-        }
-        if (errors.hasErrors()) {
-
-            model.addAttribute("req", req);
-
-            Map<String, String> validatorResult = service.validateHandling(errors);
-            for (String key : validatorResult.keySet()) {
-                model.addAttribute(key, validatorResult.get(key));
-            }
-            return "failed";
-        }
-        service.signUp(req);
-        return "success";
+    public ResponseEntity<String> signUp(@RequestBody UserRequest requset){
+        String message = service.signUp(requset);
+        return new ResponseEntity<>(message, message.equals("success")? HttpStatus.OK:HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "로그아웃", notes = "로그아웃 후 세션 삭제 하는 API")
@@ -73,5 +55,16 @@ public class UserController {
             return "login";
         }
         return "index";
+    }
+
+    @DeleteMapping("/signout")
+    public String signout(HttpSession session) {
+        if (session.getAttribute("userid") == null) {
+            return "login";
+        }
+        else {
+            String userid = session.getAttribute("userid").toString();
+            return service.signOut(userid);
+        }
     }
 }

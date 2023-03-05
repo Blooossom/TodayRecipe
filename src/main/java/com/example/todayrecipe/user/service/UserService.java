@@ -18,5 +18,7 @@ public interface UserService {
 
     String checkUser(String userId, String password);
 
+    String signOut(String userId);
+
     String login(UserRequest req);
 }

@@ -3,10 +3,15 @@ package com.example.todayrecipe.user.dto;
 import com.example.todayrecipe.comment.entity.Comment;
 import com.example.todayrecipe.post.entity.Post;
 import com.example.todayrecipe.user.entity.User;
+import io.jsonwebtoken.Claims;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.Collection;
+import java.util.Collections;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -44,6 +49,12 @@ public class UserRequest {
                 .email(email)
                 .address(address)
                 .build();
+    }
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+    public UserRequest(Claims claims) {
+        this.email = claims.get("email", String.class);
     }
 
 }

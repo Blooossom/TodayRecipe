@@ -9,6 +9,8 @@ import com.example.todayrecipe.post.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -53,39 +55,37 @@ public class PostController {
 
     @ApiOperation(value = "게시글 작성", notes = "게시글을 작성하는 API")
     @PostMapping("/addRecipe")
-    public String writePost(PostRequest request, HttpSession session) {
+    public ResponseEntity<String>writePost(PostRequest request, HttpSession session) {
         String user_id = String.valueOf(session.getAttribute("userid"));
-        return service.addPost(request, user_id);
+        String message = service.addPost(request, user_id);
+        return new ResponseEntity<>(message, message.equals("success")? HttpStatus.OK:HttpStatus.BAD_REQUEST);
     }
+
 
     @Transactional
     @ApiOperation(value = "게시글 삭제", notes = "게시글을 삭제하는 API")
     @DeleteMapping("/deletePost")
-    public String deletePost(@RequestParam String id, HttpSession session){
+    public ResponseEntity<String> deletePost(@RequestParam String id, HttpSession session){
         String userId = String.valueOf(session.getAttribute("userid"));
-        return service.deletePost(Long.valueOf(id), userId);
+        String message = service.deletePost(Long.valueOf(id), userId);
+        return new ResponseEntity<>(message, message.equals("success")? HttpStatus.OK:HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/selectPost")
-    public PostResponse selectPost(HttpSession session){
+    public ResponseEntity<PostResponse> selectPost(HttpSession session){
         Long postId = Long.valueOf(String.valueOf(session.getAttribute("post_id")));
         service.updateView(postId);
-        return service.viewPost(postId);
+        PostResponse response = service.viewPost(postId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Transactional
     @ApiOperation(value = "게시글 수정", notes = "게시글을 수정하는 API")
     @PutMapping("/updatePost")
-    public String updatePost(PostRequest request, HttpSession session) {
+    public ResponseEntity<String> updatePost(PostRequest request, HttpSession session) {
         String userId = String.valueOf(session.getAttribute("userId"));
-        try{
-            service.updatePost(request, userId);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return "failed";
-        }
-        return "success";
+        String message = service.updatePost(request, userId);
+        return new ResponseEntity<>(message, message.equals("success")? HttpStatus.OK:HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/recommendRecipe")
