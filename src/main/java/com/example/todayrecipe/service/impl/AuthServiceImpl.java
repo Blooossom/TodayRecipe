@@ -2,6 +2,7 @@ package com.example.todayrecipe.service.impl;
 
 import com.example.todayrecipe.dto.user.LoginReqDTO;
 import com.example.todayrecipe.dto.user.LoginResDTO;
+import com.example.todayrecipe.dto.user.UpdateUserReqDTO;
 import com.example.todayrecipe.dto.user.UserReqDTO;
 import com.example.todayrecipe.entity.User;
 import com.example.todayrecipe.jwt.JwtProvider;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 @Service
@@ -90,6 +92,34 @@ public class AuthServiceImpl implements AuthService {
         }
         userData.put("name", user.getName());
         return userData;
+    }
+
+    @Override
+    public String updateUserInfo(UpdateUserReqDTO updateUserReqDTO, String email) {
+        User user = userRepo.findByEmail(email).orElse(null);
+        String password = updateUserReqDTO.getPassword();
+        String phone = updateUserReqDTO.getPhone();
+        String nickname = updateUserReqDTO.getNickname();
+        String address = updateUserReqDTO.getAddress();
+
+            if (password == null || password.isBlank()) {
+                password = user.getPassword();
+            }
+            if (phone == null || phone.isBlank()) {
+                phone = user.getPhone();
+            }
+            if (nickname == null || nickname.isBlank()) {
+                nickname = user.getNickname();
+            }
+            if (address == null || address.isBlank()) {
+                address = user.getAddress();
+            }
+            if (password.length() < 20) {
+                password = encodingPassword(password);
+            }
+            Integer result = userRepo.updateInfo(password, phone, nickname, address, email);
+
+            return result > 0? "success" : "false";
     }
 
 
