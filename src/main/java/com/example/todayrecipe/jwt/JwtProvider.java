@@ -1,6 +1,6 @@
 package com.example.todayrecipe.jwt;
 
-import com.example.todayrecipe.dto.user.UserRequest;
+import com.example.todayrecipe.dto.user.LoginReqDTO;
 import com.example.todayrecipe.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -37,14 +37,14 @@ public class JwtProvider {
                 .compact();
     }
     //토큰에서 userDTO로 바꿈, JWT 필터에서 사용 유효성 검사해야함
-    public UserRequest tokenToUser(String token) {
+    public LoginReqDTO tokenToUser(String token) {
         Claims claims = null;
         if (token != null) {
             try {
                 if (validationAuthorizationHeader(token)) {
                     token = extractToken(token);
                     claims = parsingToken(token);
-                    return new UserRequest(claims);
+                    return new LoginReqDTO(claims);
                 }
             } catch (Exception err) {
                 err.printStackTrace();

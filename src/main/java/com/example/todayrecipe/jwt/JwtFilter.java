@@ -1,7 +1,8 @@
 package com.example.todayrecipe.jwt;
 
 
-import com.example.todayrecipe.dto.user.UserRequest;
+import com.example.todayrecipe.dto.user.LoginReqDTO;
+import com.example.todayrecipe.service.TokenService;
 import com.example.todayrecipe.service.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.Builder;
@@ -24,20 +25,21 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtProvider provider;
-    private final UserService service;
+    private final UserService userService;
+    private final TokenService tokenService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String tokenHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         try {
-            if (!service.checkBlacklist(tokenHeader)) {
-                UserRequest request1 = provider.tokenToUser(tokenHeader);
-                if (request1 != null) {
+            if (!tokenService.checkBlacklist(tokenHeader)) {
+                LoginReqDTO loginReqDTO = provider.tokenToUser(tokenHeader);
+                if (loginReqDTO != null) {
                     SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
-                            request1,
+                            loginReqDTO,
                             "",
-                            request1.getAuthorities()
+                            loginReqDTO.getAuthorities()
                     ));
                 }
             }
