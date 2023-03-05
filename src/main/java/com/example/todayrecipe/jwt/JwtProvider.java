@@ -1,7 +1,7 @@
 package com.example.todayrecipe.jwt;
 
-import com.example.todayrecipe.user.dto.UserRequest;
-import com.example.todayrecipe.user.entity.User;
+import com.example.todayrecipe.dto.user.UserRequest;
+import com.example.todayrecipe.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

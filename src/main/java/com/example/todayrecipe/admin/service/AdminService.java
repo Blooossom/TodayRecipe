@@ -2,9 +2,9 @@ package com.example.todayrecipe.admin.service;
 
 
 import com.example.todayrecipe.admin.dto.AdminReq;
-import com.example.todayrecipe.post.dto.PostResponse;
-import com.example.todayrecipe.post.entity.Post;
-import com.example.todayrecipe.user.dto.UserResponse;
+import com.example.todayrecipe.dto.post.PostResponse;
+import com.example.todayrecipe.entity.Post;
+import com.example.todayrecipe.dto.user.UserResponse;
 
 import java.util.List;
 

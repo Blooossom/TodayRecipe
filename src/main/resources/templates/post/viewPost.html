@@ -38,6 +38,9 @@
           <a role="button" id = "btn-post-modify" class="btn btn-primary bi bi-pencil-square"> 수정</a>
           <button type="button"  id="btn-delete" class="btn btn-danger bi bi-trash"> 삭제</button>
         </div>
+        <div>
+
+        </div>
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
           <div class="card-header py-3">
@@ -73,12 +76,12 @@
                 <textarea rows="20" class="form-control" readonly>[[${postResponse.content}]]</textarea>
               </div>
               <p class="btn_recommend" align="center">
-                <button id="recommend" class="btns btn_st3 btn_mid" >추천</button>
+                <button id="recommend" class="btn btn-primary bi bi-pencil-square" >추천</button>
               </p>
             </div>
 
           </div>
-          <head th:replace="/commentlist.html"></head>
+          <head th:replace="/comment/commentlist.html"></head>
 
         </div>
         <table class="tb tb_row">
@@ -271,6 +274,9 @@
       });
     }
   })
+</script>
+<script>
+
 </script>
 
 </body>

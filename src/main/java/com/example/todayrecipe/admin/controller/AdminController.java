@@ -3,8 +3,8 @@ package com.example.todayrecipe.admin.controller;
 
 import com.example.todayrecipe.admin.dto.AdminReq;
 import com.example.todayrecipe.admin.service.AdminService;
-import com.example.todayrecipe.post.dto.PostResponse;
-import com.example.todayrecipe.user.dto.UserResponse;
+import com.example.todayrecipe.dto.post.PostResponse;
+import com.example.todayrecipe.dto.user.UserResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

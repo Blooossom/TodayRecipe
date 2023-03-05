@@ -31,11 +31,55 @@
         <div id="content">
             <head th:replace="/common/header.html"></head>
             <div class="container-fluid">
-                <div><a href="/checkUserInfo">개인정보 수정</a></div>
-                <div>내가 스크랩한 자료 보기</div>
-                <div><a href="/goMyComment"> 내 댓글 보기</a></div>
-                <div><a href="/goMyPost">내 작성 글 보기</a></div>
-                <div><a href="/goSignOut">회원 탈퇴</a></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="jumbotron">
+                            <h2>
+                                개인정보 수정
+                            </h2>
+                            <p>
+                                This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.
+                            </p>
+                            <p>
+                                <a class="btn btn-primary btn-large" href="/checkUserInfo">이동</a>
+                            </p>
+                        </div>
+                        <div class="jumbotron">
+                            <h2>
+                                내가 작성한 글 보기
+                            </h2>
+                            <p>
+                                This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.
+                            </p>
+                            <p>
+                                <a class="btn btn-primary btn-large" href="/goMyPost">이동</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="jumbotron">
+                            <h2>
+                                내가 작성한 댓글 보기
+                            </h2>
+                            <p>
+                                This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.
+                            </p>
+                            <p>
+                                <a class="btn btn-primary btn-large" href="/goMyComment">이동</a>
+                            </p>
+                        </div>
+                        <div class="jumbotron">
+                            <h2>
+                                회원 탈퇴
+                            </h2>
+                            <p>
+                                This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.
+                            </p>
+                            <p>
+                                <a class="btn btn-primary btn-large" href="/goSignOut">이동</a>
+                            </p>
+                        </div>
+                    </div>
                 </div>
         </div>
         <head th:replace="/common/footer.html"></head>
@@ -43,7 +87,7 @@
     <!-- End of Content Wrapper -->
 </div>
 <!-- End of Page Wrapper -->
-
+</div>
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>

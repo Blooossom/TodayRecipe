@@ -31,10 +31,16 @@
         <div id="content">
             <head th:replace="/common/header.html"></head>
             <div class="container-fluid">
+                <div class="row" align="center">
+                    <div class="col-md-4">
+                        <label>비밀번호</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="password" id="password" name="password" maxlength="50" cols="100" placeholder="비밀번호를 입력해주세요." />
+                    </div>
+                </div>
                 <div>
-                    <label>비밀번호를 입력해주세요</label>
-                    <input type="text" id="password" name="password"  maxlength="50" cols="100" placeholder="비밀번호를 입력해주세요." />
-                    <button onclick="checkUser()"></button>
+                    <button onclick="checkUser()">확인</button>
                 </div>
             </div>
         </div>

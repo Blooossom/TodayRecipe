@@ -1,14 +1,12 @@
 package com.example.todayrecipe.page.controller;
 
-import com.example.todayrecipe.post.service.PostService;
-import com.example.todayrecipe.user.dto.UserRequest;
-import com.example.todayrecipe.user.entity.User;
+import com.example.todayrecipe.service.PostService;
+import com.example.todayrecipe.dto.user.UserRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import springfox.documentation.annotations.ApiIgnore;
@@ -28,22 +26,22 @@ public class PageController {
     @ApiOperation(value = "회원 가입 이동", notes = "회원가입 페이지")
     @GetMapping("/goSignUp")
     public String signup(){
-        return "signup";
+        return "/user/signup";
     }
     @ApiOperation(value = "로그인 이동", notes = "로그인 페이지")
     @GetMapping("/goLogin")
     public String login(){
-        return "login";
+        return "/user/login";
     }
     @ApiOperation(value = "게시판 이동", notes = "게시판 페이지")
     @GetMapping("/goPost")
     public String goPost(){
-        return "postlist";
+        return "/post/postlist";
     }
 
     @GetMapping("/goRecommendRecipe")
     public String goRecommendRecipe(){
-        return "recommendRecipe";
+        return "/post/recommendRecipe";
     }
 
 
@@ -59,13 +57,13 @@ public class PageController {
     @ApiOperation(value = "게시글 작성 화면으로 이동", notes = "게시글 작성 페이지")
     @GetMapping("/addPost")
     public String writePost(){
-        return "addrecipe";
+        return "/post/addrecipe";
     }
     @ApiOperation(value = "게시글 수정 화면으로 이동", notes = "게시글 수정 페이지")
     @GetMapping("/modifyPost/{id}")
     public String modifyPost(@PathVariable String id, Model model){
         model.addAttribute("postResponse", service.getPost(Long.valueOf(id)));
-        return "modifypost";
+        return "/post/modifypost";
     }
 
 
@@ -94,13 +92,9 @@ public class PageController {
     }
     @ApiOperation(value = "회원 탈퇴", notes = "마이페이지 이동 후 존재하는 버튼을 눌러 회원 탈퇴를 하는 API")
     //회원 탈퇴를 통해 DB내의 계정정보를 정지? 삭제?
-    @DeleteMapping("/goSignOut")
+    @GetMapping("/goSignOut")
     public String signOut(HttpSession session, UserRequest request){
-        if (session.getAttribute("userid") != null) {
-            User user = request.toEntity();
-            //deleteUser?
-        }
-        return "index";
+        return "/mypageDir/signout";
     }
 
     @ApiOperation(value = "게시글 보기", notes = "클릭을 통해 post id를 받고, 해당하는 post를 리턴함")
@@ -110,7 +104,7 @@ public class PageController {
         System.out.println(model.getAttribute("postResponse").toString());
         session.setAttribute("post_id", id);
         service.updateView(Long.valueOf(id));
-        return "/viewPost";
+        return "/post/viewPost";
     }
     @GetMapping("/blank")
     public String blankPage(){

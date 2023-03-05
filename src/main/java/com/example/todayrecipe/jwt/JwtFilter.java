@@ -1,8 +1,8 @@
 package com.example.todayrecipe.jwt;
 
 
-import com.example.todayrecipe.user.dto.UserRequest;
-import com.example.todayrecipe.user.service.UserService;
+import com.example.todayrecipe.dto.user.UserRequest;
+import com.example.todayrecipe.service.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;

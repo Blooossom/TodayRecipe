@@ -31,6 +31,21 @@
         <div id="content">
             <head th:replace="/common/header.html"></head>
             <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="jumbotron">
+                            <h2>
+                                정말로 탈퇴하시겠어요?
+                            </h2>
+                            <p>
+                                회원 탈퇴를 진행하시려면 아래 버튼을 눌러주세요!
+                            </p>
+                            <p>
+                                <a class="btn btn-primary btn-large" onclick="signOut()">회원 탈퇴</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <head th:replace="/common/footer.html"></head>
@@ -129,6 +144,25 @@
 <!-- main JS
     ============================================ -->
 <script src="/js/admin/main.js"></script>
+<script>
+    function signOut(){
+    $.ajax({
+        url : "/signout",
+        type : "DELETE",
+        data : {
+            id : "id"
+        },
+        success: function (data) {
+            if(data === 'success'){
+                alert("회원 탈퇴 성공");
+                location.href = "/";
+            }else{
+                alert("회원 탈퇴 실패");
+            }
+        }
+    })
+    }
+</script>
 
 </body>
 </html>

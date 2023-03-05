@@ -91,7 +91,8 @@
                             <th width ="10%">작성자</th>
                             <th width ="60%">내용</th>
                             <th width ="20%">작성일</th>
-                            <th width = "10%">제어</th>
+                            <th width = "10%">삭제</th>
+                            <th width = "10%">수정</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -99,13 +100,22 @@
                             <th width ="10%">작성자</th>
                             <th width ="60%">내용</th>
                             <th width ="20%">작성일</th>
-                            <th width = "10%">제어</th>
+                            <th width = "10%">삭제</th>
+                            <th width = "10%">수정</th>
                         </tr>
                         </tfoot>
                         <tbody id="commentBody"> </tbody>
                     </table>
                     </tbody>
                 </table>
+                <form class="collapse multi-collapse-{{id}}">
+                    <input type="hidden" id="id" value="{{id}}">
+                    <input type="hidden" id="postsId" value="{{postsId}}">
+                    <div class="form-group">
+                        <textarea class="form-control" id="comment-content" rows="3">{{comment}}</textarea>
+                    </div>
+                    <button type="button" id="btn-comment-update" class="btn btn-outline-primary bi bi-pencil-square"> 수정</button>
+                </form>
 
 
            <!-- </div>
@@ -165,7 +175,8 @@
                     con += '<td>' + data[i].writer + '</td>';
                     con += '<td>' + data[i].content +  '</td>';
                     con += '<td>' + data[i].created_date + '</td>';
-                    con += '<td>' + '<button onclick="commentDelete(${data[i].id})">'+"삭제"+'</button>' + '</td>'
+                    con += '<td>' + '<button onclick="commentDelete('+data[i].id+')">'+"삭제"+'</button>' + '</td>'
+                    con += '<td>' + '<button onclick="commentDelete('+data[i].id+')">'+"수정"+'</button>' + '</td>'
                     con += '</tr>';
                 }
                 $('#commentBody').html(con);
@@ -178,21 +189,60 @@
     function commentDelete(commentId){
         if (confirm("댓글을 삭제하시겠습니까?")){
             $.ajax({
-                url:"/deleteComment/" + id,
+                url:"/deleteComment",
                 type : "DELETE",
-                data: {'id': id},
+                data: {'id': commentId},
                 success: function (data) {
                     if (data === 'success') {
-                        alert("레시피를 삭제하였습니다");
+                        alert("댓글을 삭제하였습니다");
                         location.href = "/goPost";
                     } else {
-                        alert("레시피 삭제를 실패하였습니다.")
+                        alert("댓글 삭제를 실패하였습니다.")
                     }
                 }
             })
         }
     }
 
+</script>
+<script>
+    const _this = this;
+    document.querySelectorAll('#btn-comment-save').forEach(function (item)) {
+        item.addEventListener('click', function (){
+            const form = this.closest('form');
+            _this.commentModify(form);
+        });
+
+    }
+</script>
+<script>
+    function commentModify(form) {
+        const data = {
+            id : form.querySelector('#id').value,
+            postId : form.querySelector('#postId').value,
+            comment : form.querySelector('#comment-content').valu
+
+        }
+        if (!data.comment || data.comment.trim() === "") {
+            alert("@!!");
+            return false;
+        }
+        const con_check = confirm("tnwjd?");
+        if (con_check === true) {
+            $.ajax({
+                type :'PUT',
+                url : '/viewPost/' + data.postId + '/comments/' + data.id,
+                dataType: 'JSON',
+                contentType:'application/json; charset = utf-8',
+                data:JSON.stringify(data)
+            }).done(function () {
+                window.location.reload();
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+        }
+
+    }
 </script>
 </body>
 </html>

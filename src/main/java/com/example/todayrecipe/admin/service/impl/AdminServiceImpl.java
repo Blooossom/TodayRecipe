@@ -1,12 +1,11 @@
 package com.example.todayrecipe.admin.service.impl;
 
 import com.example.todayrecipe.admin.dto.AdminReq;
-import com.example.todayrecipe.admin.entity.Admin;
 import com.example.todayrecipe.admin.repository.AdminRepository;
 import com.example.todayrecipe.admin.service.AdminService;
-import com.example.todayrecipe.post.dto.PostResponse;
-import com.example.todayrecipe.post.entity.Post;
-import com.example.todayrecipe.user.dto.UserResponse;
+import com.example.todayrecipe.dto.post.PostResponse;
+import com.example.todayrecipe.entity.Post;
+import com.example.todayrecipe.dto.user.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
