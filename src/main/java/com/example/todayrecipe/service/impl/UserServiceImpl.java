@@ -1,6 +1,6 @@
 package com.example.todayrecipe.service.impl;
 
-import com.example.todayrecipe.dto.user.UserRequest;
+import com.example.todayrecipe.dto.user.UserReqDTO;
 import com.example.todayrecipe.entity.User;
 import com.example.todayrecipe.repository.UserRepository;
 import com.example.todayrecipe.service.UserService;
@@ -20,20 +20,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repo;
 
 
-    @Override
-    public String signUp(UserRequest req) {
-        try {
-            checkUserIdDuplication(req);
-            checkNickNameDuplication(req);
-            checkEmailDuplication(req);
-            repo.save(req.toEntity());
-        } catch (Exception err) {
-            err.printStackTrace();
-            return "failed";
-        }
 
-        return "success";
-    }
 
     @Override
     public String checkUser(String userId, String password) {
@@ -57,17 +44,7 @@ public class UserServiceImpl implements UserService {
         return "success";
     }
 
-    @Override
-    public String login(UserRequest req) {
-        User user = repo.findByUseridAndPassword(req.getUserid(), req.getPassword())
-                .orElse(null);
-        if (user != null) {
-            return "success";
-        }
-        else {
-            return "failed";
-        }
-    }
+
 
 
     @Override
@@ -84,8 +61,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public void checkUserIdDuplication(UserRequest req) {
-        boolean userIdDuplication = repo.existsByUserid(req.toEntity().getUserid());
+    public void checkUserIdDuplication(UserReqDTO req) {
+        boolean userIdDuplication = repo.existsByUserid(req.toEntity().getEmail());
         if (userIdDuplication) {
             throw new IllegalStateException("이미 존재하는 아이디입니다.");
         }
@@ -93,7 +70,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public void checkNickNameDuplication(UserRequest req) {
+    public void checkNickNameDuplication(UserReqDTO req) {
         boolean nicknameDuplication = repo.existsByNickname(req.toEntity().getNickname());
         if (nicknameDuplication) {
             throw new IllegalStateException("이미 존재하는 닉네임입니다.");
@@ -102,7 +79,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public void checkEmailDuplication(UserRequest req) {
+    public void checkEmailDuplication(UserReqDTO req) {
         boolean emailDuplication = repo.existsByEmail(req.toEntity().getEmail());
         if (emailDuplication) {
             throw new IllegalStateException("이미 존재하는 이메일입니다.");
