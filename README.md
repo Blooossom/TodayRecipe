@@ -30,9 +30,6 @@
 - JPA(SpringDataJPA)
 - MariaDB
 - Thymeleaf
-- HTML5
-- CSS3
-- JavaScript
 - Gradle-Groovy
 - Spring Security
 
