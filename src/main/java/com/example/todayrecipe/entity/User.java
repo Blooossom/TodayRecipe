@@ -27,11 +27,14 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column
+    @Column(name = "name")
     private String name;
 
     @Column(name = "nickname")
     private String nickname;
+    
+    @Column(name = "phone")
+    private String phone;
 
     @Column(name = "address")
     private String address;
