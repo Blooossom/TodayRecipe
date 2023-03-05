@@ -23,7 +23,7 @@ public class Post extends BaseTimeEntity {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long postNo;
 
     @Column(length = 500, nullable = false)
     private String title;
