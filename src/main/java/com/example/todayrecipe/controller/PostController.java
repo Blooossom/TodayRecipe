@@ -28,7 +28,6 @@ public class PostController {
      */
     @GetMapping("/recommendRecipeList")
     public List<PostResponse> viewRecommendRecipe() {
-        System.out.println(service.selectRecommendList());
         return service.selectRecommendList();
     }
 
@@ -37,8 +36,7 @@ public class PostController {
      */
     @GetMapping("/goMyPostList")
     public List<PostResponse> viewPostListByUser(@AuthenticationPrincipal LoginReqDTO user){
-        String email = (user.getEmail());
-        return service.selectPostListByUserid(email);
+        return service.selectPostListByEmail(user);
     }
 
     /**
@@ -66,9 +64,7 @@ public class PostController {
     @ApiOperation(value = "게시글 작성", notes = "게시글을 작성하는 API")
     @PostMapping("/addRecipe")
     public ResponseEntity<String> writePost(@AuthenticationPrincipal LoginReqDTO user, @RequestBody PostRequest request) {
-        String email = user.getEmail();
-        String message = service.addPost(request, email);
-        return new ResponseEntity<>(message, message.equals("success")? HttpStatus.OK:HttpStatus.BAD_REQUEST);
+        return service.addPost(request, user);
     }
 
     /**
@@ -77,10 +73,8 @@ public class PostController {
     @Transactional
     @ApiOperation(value = "게시글 삭제", notes = "게시글을 삭제하는 API")
     @DeleteMapping("/deletePost")
-    public ResponseEntity<String> deletePost(@RequestParam String id, @AuthenticationPrincipal LoginReqDTO user){
-        String email = user.getEmail();
-        String message = service.deletePost(Long.valueOf(id), email);
-        return new ResponseEntity<>(message, message.equals("success")? HttpStatus.OK:HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> deletePost(@RequestBody HashMap<String, Object> map, @AuthenticationPrincipal LoginReqDTO user){
+        return service.deletePost(map, user);
     }
 
     /**
@@ -88,10 +82,7 @@ public class PostController {
      */
     @GetMapping("/selectPost")
     public ResponseEntity<PostResponse> selectPost(@RequestBody HashMap<String, Object> map){
-        Long postNo = Long.valueOf(map.get("postNo").toString());
-        service.updateView(postNo);
-        PostResponse response = service.viewPost(postNo);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return service.viewPost(map);
     }
 
     /**
@@ -101,18 +92,15 @@ public class PostController {
     @ApiOperation(value = "게시글 수정", notes = "게시글을 수정하는 API")
     @PutMapping("/updatePost")
     public ResponseEntity<String> updatePost(@AuthenticationPrincipal LoginReqDTO user, @RequestBody PostRequest request) {
-        String email = user.getEmail();
-        String message = service.updatePost(request, email);
-        return new ResponseEntity<>(message, message.equals("success")? HttpStatus.OK:HttpStatus.BAD_REQUEST);
+        return service.updatePost(request, user);
     }
 
     /**
      * 추천 수 상승
      */
     @PutMapping("/recommendRecipe")
-    public void recommend(Long postid) {
-        System.out.println(postid);
-        service.updateRecommend(postid);
+    public void recommend(@RequestBody HashMap<String, Object> map) {
+        service.updateRecommend(map);
     }
 
 }

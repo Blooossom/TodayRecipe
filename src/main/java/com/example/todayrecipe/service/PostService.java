@@ -3,8 +3,12 @@ package com.example.todayrecipe.service;
 
 import com.example.todayrecipe.dto.post.PostRequest;
 import com.example.todayrecipe.dto.post.PostResponse;
+import com.example.todayrecipe.dto.user.LoginReqDTO;
+import org.springframework.http.ResponseEntity;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public interface PostService {
 
@@ -13,21 +17,21 @@ public interface PostService {
 
     List<PostResponse> selectRecommendList();
 
-    List<PostResponse> selectPostListByUserid(String userId);
+    List<PostResponse> selectPostListByEmail(LoginReqDTO user);
 
     //레시피 작성할 때
-    String addPost(PostRequest request, String user_id);
+    ResponseEntity<String> addPost(PostRequest request, LoginReqDTO userRequest);
 
     //게시글을 눌렀을 때, 게시글을 출력해 줌
-    PostResponse viewPost(Long postId);
+    ResponseEntity<PostResponse> viewPost(HashMap<String, Object> map);
 
-    String deletePost(Long postId, String userId);
+    ResponseEntity<String> deletePost(HashMap<String, Object> map, LoginReqDTO user);
 
-    String updatePost(PostRequest request, String userId);
+    ResponseEntity<String> updatePost(PostRequest request, LoginReqDTO user);
 
-    int updateView(Long id);
+    int updateView(HashMap<String, Object> map);
 
-    int updateRecommend(Long id);
-    PostResponse getPost(Long postId);
+    int updateRecommend(HashMap<String, Object> map);
+    PostResponse getPost(HashMap<String, Object> map);
 
 }
