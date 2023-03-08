@@ -2,6 +2,8 @@ package com.example.todayrecipe.repository;
 
 import com.example.todayrecipe.dto.comment.UpdateCommentReqDTO;
 import com.example.todayrecipe.entity.Comment;
+import com.example.todayrecipe.entity.Post;
+import com.example.todayrecipe.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,11 +16,11 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    List<Comment> findAllByPostId(Long post_id);
-    List<Comment> findByPostId(Long post_id);
-    List<Comment> findAllByUserId(Long userID);
+    List<Comment> findAllByPost(Post post);
+    List<Comment> findByPost(Post post);
+    List<Comment> findAllByUser(User user);
 
-    String deleteCommentById(Long comment_id);
+    Integer deleteByCommentNo(Long commentNo);
 
     Comment findByCommentNo(Long commentNo);
 
