@@ -23,26 +23,14 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public String checkUser(String userId, String password) {
-            User user = repo.findUserByUserid(userId).orElse(null);
+    public String checkUser(String email, String password) {
+            User user = repo.findByEmail(email).orElse(null);
             if (user.getPassword().equals(password)) {
                 return "success";
             }
             return "failed";
     }
 
-    @Transactional
-    @Override
-    public String signOut(String userId) {
-        try {
-            User user = repo.findUserByUserid(userId).orElse(null);
-            repo.deleteById(user.getId());
-        }catch (Exception err) {
-            err.printStackTrace();
-            return "failed";
-        }
-        return "success";
-    }
 
 
 
@@ -62,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public void checkUserIdDuplication(UserReqDTO req) {
-        boolean userIdDuplication = repo.existsByUserid(req.toEntity().getEmail());
+        boolean userIdDuplication = repo.existsByEmail(req.getEmail());
         if (userIdDuplication) {
             throw new IllegalStateException("이미 존재하는 아이디입니다.");
         }
