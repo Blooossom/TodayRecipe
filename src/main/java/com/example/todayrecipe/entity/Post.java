@@ -28,6 +28,9 @@ public class Post extends BaseTimeEntity {
     @Column(length = 500, nullable = false)
     private String title;
 
+    @Column(name = "tag")
+    private String tag;
+
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
@@ -42,7 +45,7 @@ public class Post extends BaseTimeEntity {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "email")
     private User user;
 
     public void update(String title, String content){
