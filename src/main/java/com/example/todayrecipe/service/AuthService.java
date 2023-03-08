@@ -17,4 +17,6 @@ public interface AuthService {
     Map<String, String> checkPassword(String email, String password);
 
     String updateUserInfo(UpdateUserReqDTO updateUserReqDTO, String email);
+
+    ResponseEntity<String> signOut(LoginReqDTO loginReqDTO);
 }

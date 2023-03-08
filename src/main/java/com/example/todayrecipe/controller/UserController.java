@@ -32,41 +32,53 @@ public class UserController {
 
     private final TokenService tokenService;
 
+    /**
+     * 로그인
+     * @param request
+     * @return
+     */
     @ApiOperation(value = "회원 로그인", notes = "회원 로그인 후 세션에 아이디 등록")
     @PostMapping("/login")
     public LoginResDTO login(@RequestBody LoginReqDTO request){
         return authService.login(request);
     }
 
-    @PostMapping("/checkUser")
-    public String checkUser(HttpSession session, String password){
-        String userId = session.getAttribute("userid").toString();
-        return service.checkUser(userId, password);
-    }
-
+    /**
+     * 회원가입
+     * @param requset
+     * @return
+     */
     @ApiOperation(value = "회원가입", notes = "유효성, 중복검사 후 문제 없을 경우 회원가입 시키는 API")
     @PostMapping("/signup")
     public ResponseEntity signUp(@RequestBody UserReqDTO requset){
         return authService.signUp(requset);
     }
 
+    /**
+     * 로그아웃
+     * @param token
+     * @return
+     */
     @ApiOperation(value = "로그아웃", notes = "로그아웃 후 세션 삭제 하는 API")
     @GetMapping("/logout")
     public ResponseEntity logout(@RequestHeader(name = "Authorization") String token) {
         return tokenService.logout(token);
     }
 
+    /**
+     * 회원탈퇴
+     */
     @DeleteMapping("/signout")
-    public String signout(HttpSession session) {
-        if (session.getAttribute("userid") == null) {
-            return "login";
-        }
-        else {
-            String userid = session.getAttribute("userid").toString();
-            return service.signOut(userid);
-        }
+    public ResponseEntity<String> signout(@AuthenticationPrincipal LoginReqDTO user) {
+        return authService.signOut(user);
     }
 
+    /**
+     * 비밀번호 확인
+     * @param user
+     * @param password
+     * @return
+     */
     @PostMapping("/mypage/check")
     public Map<String, String> checkPassword(@AuthenticationPrincipal LoginReqDTO user, @RequestBody HashMap<String, Objects> password) {
         return authService.checkPassword(user.getEmail(), password.get("password").toString());

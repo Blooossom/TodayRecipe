@@ -11,6 +11,7 @@ import com.example.todayrecipe.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -120,6 +121,19 @@ public class AuthServiceImpl implements AuthService {
             Integer result = userRepo.updateInfo(password, phone, nickname, address, email);
 
             return result > 0? "success" : "false";
+    }
+
+    @Override
+    public ResponseEntity<String> signOut(LoginReqDTO loginReqDTO) {
+        User user = userRepo.findByEmail(loginReqDTO.getEmail()).orElse(null);
+        try {
+            userRepo.delete(user);
+        }
+        catch (Exception err) {
+            err.printStackTrace();
+            return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
 
