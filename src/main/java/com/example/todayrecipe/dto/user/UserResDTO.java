@@ -20,11 +20,7 @@ public class UserResDTO {
 
     private String phone;
     private String address;
-
-    private Post post;
-
-    private Comment comment;
-
+    
     public UserResDTO(User user){
         this.email = user.getEmail();
         this.name = user.getName();
