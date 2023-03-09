@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 @ToString
 public class PostResponse {
 
-    private Long id;
+    private Long postNo;
     private String title;
     private String content;
     private String writer;
@@ -25,7 +25,7 @@ public class PostResponse {
     private User user;
 
     public PostResponse (Post post) {
-        this.id = post.getId();
+        this.postNo = post.getPostNo();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.writer = post.getWriter();

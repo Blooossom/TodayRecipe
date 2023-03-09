@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CommentResponse {
+public class CommentResDTO {
 
     private Long id;
     private String writer;
@@ -21,8 +21,7 @@ public class CommentResponse {
     private String content;
     private Post post;
     private User user;
-    public CommentResponse (Comment comment) {
-        this.id = comment.getId();
+    public CommentResDTO(Comment comment) {
         this.writer = comment.getWriter();
         this.content = comment.getContent();
         this.created_date = comment.getCreated_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
