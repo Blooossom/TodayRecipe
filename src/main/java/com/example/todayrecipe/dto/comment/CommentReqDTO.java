@@ -1,6 +1,7 @@
 package com.example.todayrecipe.dto.comment;
 
 
+import com.example.todayrecipe.dto.user.LoginReqDTO;
 import com.example.todayrecipe.entity.Comment;
 import com.example.todayrecipe.entity.Post;
 import com.example.todayrecipe.entity.User;
@@ -11,23 +12,28 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class CommentRequest {
-    private Long id;
+public class CommentReqDTO {
+    private Long commentNo;
     private String writer;
+
     private String created_date;
+
     private String modified_date;
     private String content;
-    private Long post_id;
-    private Long user_id;
+    private Long postNo;
+    private String email;
 
-    public Comment toEntity(CommentRequest request){
+    public Comment toEntity(User user, Post post) {
         return Comment.builder()
-                .post(Post.builder().id(post_id).build())
-                .user(User.builder().id(user_id).build())
-                .writer(writer)
+                .user(user)
+                .post(post)
+                .writer(user.getNickname())
                 .content(content)
                 .build();
     }
+
+
+
 
 
 }
