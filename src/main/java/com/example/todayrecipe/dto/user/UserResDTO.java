@@ -12,8 +12,6 @@ import lombok.*;
 @ToString
 public class UserResDTO {
 
-    private Long id;
-
     private String email;
 
     private String nickname;
@@ -21,18 +19,17 @@ public class UserResDTO {
     private String name;
 
     private String phone;
-    private String indate;
+    private String address;
 
     private Post post;
 
     private Comment comment;
 
     public UserResDTO(User user){
-        this.id = user.getId();
         this.email = user.getEmail();
         this.name = user.getName();
         this.nickname = user.getNickname();
         this.phone = user.getPhone();
-        this.indate = user.getIndate();
+        this.address = user.getAddress();
     }
 }
