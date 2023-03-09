@@ -12,24 +12,33 @@ import lombok.*;
 @ToString
 public class PostRequest {
 
-
-    private Long id;
     private String title;
-    private String content;
-    private String writer;
-    private int view;
-    private String created_date;
-    private String modified_date;
-    private Long user_id;
 
-    public Post toEntity(){
+    private String content;
+
+    private String tag;
+
+    private int view;
+
+    private int recommend;
+
+    private String created_date;
+
+    private String modified_date;
+
+    private String email;
+
+    public Post toEntity(User user) {
         return Post.builder()
-                .user(User.builder().id(user_id).build())
+                .user(user)
                 .title(title)
-                .writer(writer)
                 .content(content)
-                .view(0)
-                .recommend(0)
+                .writer(user.getNickname())
+                .tag(tag)
+                .view(view)
+                .recommend(recommend)
                 .build();
     }
+
+
 }
