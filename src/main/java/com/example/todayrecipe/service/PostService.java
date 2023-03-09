@@ -31,7 +31,7 @@ public interface PostService {
 
     int updateView(Long postNo);
 
-    int updateRecommend(HashMap<String, Object> map);
+    ResponseEntity<String> updateRecommend(HashMap<String, Object> map);
     PostResDTO getPost(HashMap<String, Object> map);
 
 }

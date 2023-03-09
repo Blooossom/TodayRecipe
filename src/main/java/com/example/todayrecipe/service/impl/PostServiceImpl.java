@@ -90,7 +90,6 @@ public class PostServiceImpl implements PostService {
             updateView(postNo);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
-
     }
     @Transactional
     @Override
@@ -159,8 +158,14 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public int updateRecommend(HashMap<String, Object> map) {
-      return repo.updateRecommend(Long.valueOf(map.get("postNo").toString()));
+    public ResponseEntity<String> updateRecommend(HashMap<String, Object> map) {
+        try {
+            repo.updateRecommend(Long.valueOf(map.get("postNo").toString()));
+        }catch (Exception err) {
+            err.printStackTrace();
+            return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
+        }
+      return new ResponseEntity<>("success", HttpStatus.OK);
     }
     @Override
     @Transactional
