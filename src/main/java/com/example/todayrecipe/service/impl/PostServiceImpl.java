@@ -77,16 +77,17 @@ public class PostServiceImpl implements PostService {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @Transactional
     @Override
     public ResponseEntity<PostResDTO> viewPost(HashMap<String, Object> map) {
         Long postNo = Long.valueOf(map.get("postNo").toString());
-        Post post = repo.findByPostNo(postNo).orElse(null);
+        Post post = repo.findByPostno(postNo).orElse(null);
         PostResDTO response = new PostResDTO(post);
         if (response == null) {
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
         else {
-            updateView(map);
+            updateView(postNo);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
 
@@ -99,12 +100,12 @@ public class PostServiceImpl implements PostService {
         Long postNo = Long.valueOf(map.get("postNo").toString());
         try {
             User user = userRepo.findByEmail(email).orElse(null);
-            Post post = repo.findByPostNo(postNo).orElse(null);
+            Post post = repo.findByPostno(postNo).orElse(null);
             if (!post.getUser().getEmail().equals(user.getEmail())) {
                 String message = "failed";
                 return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
             }
-            result = repo.deleteByPostNo(postNo);
+            result = repo.deleteByPostno(postNo);
         } catch (Exception err) {
             String message = "failed";
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
@@ -123,36 +124,37 @@ public class PostServiceImpl implements PostService {
     @Transactional
     @Override
     public ResponseEntity<String> updatePost(UpdatePostReqDTO reqDTO, LoginReqDTO loginReqDTO) {
-       User user = userRepo.findByEmail(loginReqDTO.getEmail()).orElse(null);
-       Post post = repo.findByPostNo(reqDTO.getPostNo()).orElse(null);
-       Integer result = null;
-       if (!post.getUser().getEmail().equals(user.getEmail())) {
-           return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
-       }
-       Long postNo = reqDTO.getPostNo();
-       String title = reqDTO.getTitle().isBlank() || reqDTO.getTitle() == null? post.getTitle() : reqDTO.getTitle();
-       String content = reqDTO.getContent().isBlank() || reqDTO.getContent() == null? post.getContent() : reqDTO.getTitle();
-
-       try {
-           result = repo.updatePost(title, content, postNo);
-       }
-       catch (Exception err) {
-           err.printStackTrace();
-           return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
-       }
-       if (result > 0) {
-           return new ResponseEntity<>("success", HttpStatus.OK);
-       }
-       else {
-           return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
-
-       }
+//       User user = userRepo.findByEmail(loginReqDTO.getEmail()).orElse(null);
+//       Post post = repo.findByPostNo(reqDTO.getPostNo()).orElse(null);
+//       Long result = null;
+//       if (!post.getUser().getEmail().equals(user.getEmail())) {
+//           return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
+//       }
+//       Long postNo = reqDTO.getPostNo();
+//       String title = reqDTO.getTitle().isBlank() || reqDTO.getTitle() == null? post.getTitle() : reqDTO.getTitle();
+//       String content = reqDTO.getContent().isBlank() || reqDTO.getContent() == null? post.getContent() : reqDTO.getTitle();
+//
+//       try {
+//           result = repo.updatePost(title, content, postNo);
+//       }
+//       catch (Exception err) {
+//           err.printStackTrace();
+//           return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
+//       }
+//       if (result > 0) {
+//           return new ResponseEntity<>("success", HttpStatus.OK);
+//       }
+//       else {
+//           return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
+//
+//       }
+        return null;
 
     }
     @Transactional
     @Override
-    public int updateView(HashMap<String, Object> map) {
-        return repo.updateView(Long.valueOf(map.get("postNo").toString()));
+    public int updateView(Long postNo) {
+        return repo.updateView(postNo);
     }
 
     @Transactional

@@ -29,7 +29,7 @@ public interface PostService {
 
     ResponseEntity<String> updatePost(UpdatePostReqDTO reqDTO, LoginReqDTO user);
 
-    int updateView(HashMap<String, Object> map);
+    int updateView(Long postNo);
 
     int updateRecommend(HashMap<String, Object> map);
     PostResDTO getPost(HashMap<String, Object> map);
