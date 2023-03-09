@@ -12,11 +12,11 @@ public interface AuthService {
 
     ResponseEntity signUp(UserReqDTO signUpReq);
 
-    LoginResDTO login(LoginReqDTO loginReqDTO);
+    ResponseEntity<LoginResDTO> login(LoginReqDTO loginReqDTO);
 
     Map<String, String> checkPassword(String email, String password);
 
-    String updateUserInfo(UpdateUserReqDTO updateUserReqDTO, String email);
+    ResponseEntity<String> updateUserInfo(UpdateUserReqDTO updateUserReqDTO, LoginReqDTO user);
 
     ResponseEntity<String> signOut(LoginReqDTO loginReqDTO);
 }

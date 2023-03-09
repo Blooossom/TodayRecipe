@@ -22,15 +22,10 @@ public class MyPageController {
 
     /**
      * 회원 정보 수정
-     * @param user
-     * @param updateUserReqDTO
-     * @return
      */
     @PutMapping("/mypage/updateInfo")
     public ResponseEntity<String> updateUserInfo(@AuthenticationPrincipal LoginReqDTO user, @RequestBody UpdateUserReqDTO updateUserReqDTO) {
-        String email = user.getEmail();
-        String message = authService.updateUserInfo(updateUserReqDTO, email);
-        return new ResponseEntity<>(message, message.equals("success")? HttpStatus.OK:HttpStatus.BAD_REQUEST);
+        return authService.updateUserInfo(updateUserReqDTO, user);
     }
 
 

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
@@ -63,9 +64,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public LoginResDTO login(LoginReqDTO loginReqDTO) {
+    public ResponseEntity<LoginResDTO> login(LoginReqDTO loginReqDTO) {
         if (loginReqDTO.getEmail() == null || loginReqDTO.getPassword() == null) {
-            return new LoginResDTO("아이디 혹은 비밀번호를 입력해주세요");
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
         else {
             User user = null;
@@ -80,7 +81,7 @@ public class AuthServiceImpl implements AuthService {
             }
             String token = provider.makeToken(user);
             LoginResDTO loginResDTO = new LoginResDTO(user, token);
-            return loginResDTO;
+            return new ResponseEntity<>(loginResDTO , HttpStatus.OK);
         }
     }
 
@@ -95,9 +96,10 @@ public class AuthServiceImpl implements AuthService {
         return userData;
     }
 
+    @Transactional
     @Override
-    public String updateUserInfo(UpdateUserReqDTO updateUserReqDTO, String email) {
-        User user = userRepo.findByEmail(email).orElse(null);
+    public ResponseEntity<String> updateUserInfo(UpdateUserReqDTO updateUserReqDTO, LoginReqDTO reqDTO) {
+        User user = userRepo.findByEmail(reqDTO.getEmail()).orElse(null);
         String password = updateUserReqDTO.getPassword();
         String phone = updateUserReqDTO.getPhone();
         String nickname = updateUserReqDTO.getNickname();
@@ -118,9 +120,8 @@ public class AuthServiceImpl implements AuthService {
             if (password.length() < 20) {
                 password = encodingPassword(password);
             }
-            Integer result = userRepo.updateInfo(password, phone, nickname, address, email);
-
-            return result > 0? "success" : "false";
+            Integer result = userRepo.updateInfo(password, phone, nickname, address, reqDTO.getEmail());
+            return new ResponseEntity<>(result > 0? "success" : "false", result>0? HttpStatus.OK:HttpStatus.BAD_REQUEST);
     }
 
     @Override
