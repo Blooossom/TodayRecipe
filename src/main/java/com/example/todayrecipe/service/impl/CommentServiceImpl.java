@@ -1,7 +1,7 @@
 package com.example.todayrecipe.service.impl;
 
 import com.example.todayrecipe.dto.comment.CommentReqDTO;
-import com.example.todayrecipe.dto.comment.CommentResponse;
+import com.example.todayrecipe.dto.comment.CommentResDTO;
 import com.example.todayrecipe.dto.comment.UpdateCommentReqDTO;
 import com.example.todayrecipe.dto.user.LoginReqDTO;
 import com.example.todayrecipe.entity.Comment;
@@ -30,34 +30,35 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepo;
 
     @Override
-    public List<CommentResponse> viewCommentList(HashMap<String, Object> map) {
-        Post post = postRepo.findByPostNo(Long.valueOf(map.get("postNo").toString())).orElse(null);
+    public List<CommentResDTO> viewCommentList(HashMap<String, Object> map) {
+        Post post = postRepo.findByPostno(Long.valueOf(map.get("postNo").toString())).orElse(null);
         return repo.findAllByPost(post)
                 .stream()
-                .map(CommentResponse::new)
+                .map(CommentResDTO::new)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<CommentResponse> viewMyComment(LoginReqDTO loginReqDTO) {
+    public List<CommentResDTO> viewMyComment(LoginReqDTO loginReqDTO) {
         User user = userRepo.findByEmail(loginReqDTO.getEmail()).orElse(null);
         return repo.findAllByUser(user)
                 .stream()
-                .map(CommentResponse::new)
+                .map(CommentResDTO::new)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public ResponseEntity<String> addComment(CommentReqDTO commentReqDTO, LoginReqDTO loginReqDTO, HashMap<String, Object> map) {
+    public ResponseEntity<String> addComment(CommentReqDTO commentReqDTO, LoginReqDTO loginReqDTO) {
         try {
-            Post post = postRepo.findByPostNo(Long.valueOf(map.get("postNo").toString())).orElse(null);
+            Post post = postRepo.findByPostno(commentReqDTO.getPostno()).orElse(null);
             User user = userRepo.findByEmail(loginReqDTO.getEmail()).orElse(null);
-            repo.save(Comment.builder()
-                    .post(post)
-                    .user(user)
-                    .writer(user.getNickname())
-                    .content(commentReqDTO.getContent())
-                    .build());
+            repo.save(commentReqDTO.toEntity(user, post));
+//                    Comment.builder()
+//                            .post(post)
+//                            .user(user)
+//                            .writer(user.getNickname())
+//                            .content(commentReqDTO.getContent())
+//                    .build());
         }catch (Exception err) {
             err.printStackTrace();
             return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
@@ -81,6 +82,7 @@ public class CommentServiceImpl implements CommentService {
         }catch (Exception err) {
             err.printStackTrace();
             return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
+
         }
     }
 
@@ -91,7 +93,7 @@ public class CommentServiceImpl implements CommentService {
         if (content == null || content.isBlank()) {
             content = comment.getContent();
         }
-        Integer result = repo.updateComment(content, comment.getCommentNo());
+        Long result = repo.updateComment(content, comment.getCommentNo());
         String message = result > 0? "success":"failed";
         return  new ResponseEntity<>(message, message.equals("success")? HttpStatus.OK:HttpStatus.BAD_REQUEST);
     }
