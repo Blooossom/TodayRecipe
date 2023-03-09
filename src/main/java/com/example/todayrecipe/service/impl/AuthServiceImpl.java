@@ -1,9 +1,6 @@
 package com.example.todayrecipe.service.impl;
 
-import com.example.todayrecipe.dto.user.LoginReqDTO;
-import com.example.todayrecipe.dto.user.LoginResDTO;
-import com.example.todayrecipe.dto.user.UpdateUserReqDTO;
-import com.example.todayrecipe.dto.user.UserReqDTO;
+import com.example.todayrecipe.dto.user.*;
 import com.example.todayrecipe.entity.User;
 import com.example.todayrecipe.jwt.JwtProvider;
 import com.example.todayrecipe.repository.UserRepository;
@@ -137,6 +134,17 @@ public class AuthServiceImpl implements AuthService {
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<UserResDTO> viewMyInfo(LoginReqDTO reqDTO){
+        User user = userRepo.findByEmail(reqDTO.getEmail()).orElse(null);
+        return new ResponseEntity<UserResDTO>(new UserResDTO(User.builder()
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .name(user.getName())
+                .phone(user.getPhone())
+                .address(user.getAddress())
+                .build()), HttpStatus.OK);
+    }
 
     private String encodingPassword(String password) {
         return encoder.encode(password);

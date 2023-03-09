@@ -1,9 +1,6 @@
 package com.example.todayrecipe.service;
 
-import com.example.todayrecipe.dto.user.LoginReqDTO;
-import com.example.todayrecipe.dto.user.LoginResDTO;
-import com.example.todayrecipe.dto.user.UpdateUserReqDTO;
-import com.example.todayrecipe.dto.user.UserReqDTO;
+import com.example.todayrecipe.dto.user.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
@@ -19,4 +16,6 @@ public interface AuthService {
     ResponseEntity<String> updateUserInfo(UpdateUserReqDTO updateUserReqDTO, LoginReqDTO user);
 
     ResponseEntity<String> signOut(LoginReqDTO loginReqDTO);
+
+    ResponseEntity<UserResDTO> viewMyInfo(LoginReqDTO reqDTO);
 }
