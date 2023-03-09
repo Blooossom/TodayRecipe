@@ -21,14 +21,14 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByOrderByRecommendDesc();
 
     @Modifying
-    @Query("update Post post set post.view = post.view + 1 where post.id = :id")
+    @Query("update Post post set post.view = post.view + 1 where post.postNo = :postNo")
     int updateView(Long id);
 
     List<Post> findAllByUser(User user);
 
     @Modifying
-    @Query("update Post post set post.recommend = post.recommend + 1 where post.id = :id")
-    int updateRecommend(Long id);
+    @Query("update Post post set post.recommend = post.recommend + 1 where post.postNo = :postNo")
+    int updateRecommend(Long postNo);
 
     @Modifying
     @Query(value = "UPDATE post p SET p.content =:content WHERE p.postNo =:postNo", nativeQuery = true)
