@@ -34,7 +34,7 @@ public class PostController {
     /**
      * 내가 작성한 게시글 목록 출력
      */
-    @GetMapping("/goMyPostList")
+    @GetMapping("/mypage/postlist")
     public List<PostResDTO> viewPostListByUser(@AuthenticationPrincipal LoginReqDTO user){
         return service.selectPostListByEmail(user);
     }
@@ -53,8 +53,7 @@ public class PostController {
      */
     @ApiOperation(value = "게시글 검색", notes = "키워드에 따라 게시글을 검색하는 API")
     @GetMapping("/post/search?keyword={keyword}")
-    public List<PostResDTO> viewPostListByNickName(HttpSession session) {
-        session.setAttribute("post_id", null);
+    public List<PostResDTO> viewPostListByNickName() {
         return null;
     }
 
