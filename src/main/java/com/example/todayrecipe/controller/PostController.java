@@ -97,9 +97,9 @@ public class PostController {
     /**
      * 추천 수 상승
      */
-    @PutMapping("/recommendRecipe")
-    public void recommend(@RequestBody HashMap<String, Object> map) {
-        service.updateRecommend(map);
+    @PutMapping("/recommend")
+    public ResponseEntity<String> recommend(@RequestBody HashMap<String, Object> map) {
+        return service.updateRecommend(map);
     }
 
 }
