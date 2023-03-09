@@ -1,7 +1,8 @@
 package com.example.todayrecipe.service.impl;
 
-import com.example.todayrecipe.dto.post.PostRequest;
-import com.example.todayrecipe.dto.post.PostResponse;
+import com.example.todayrecipe.dto.post.PostReqDTO;
+import com.example.todayrecipe.dto.post.PostResDTO;
+import com.example.todayrecipe.dto.post.UpdatePostReqDTO;
 import com.example.todayrecipe.dto.user.LoginReqDTO;
 import com.example.todayrecipe.entity.Post;
 import com.example.todayrecipe.repository.PostRepository;
@@ -10,7 +11,6 @@ import com.example.todayrecipe.repository.UserRepository;
 import com.example.todayrecipe.service.PostService;
 import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,9 +29,9 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepo;
 
     @Override
-    public List<PostResponse> selectPostList() {
-        List<PostResponse> responseList = repo.findAll().stream()
-                .map(PostResponse::new).collect(Collectors.toList());
+    public List<PostResDTO> selectPostList() {
+        List<PostResDTO> responseList = repo.findAll().stream()
+                .map(PostResDTO::new).collect(Collectors.toList());
         for (int i = 0; i < responseList.size(); i++) {
             System.out.println(responseList.get(i).toString());
         }
@@ -40,23 +39,23 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostResponse> selectRecommendList(){
-        List<PostResponse> responseList = repo.findAllByOrderByRecommendDesc().stream()
-                .map(PostResponse::new).collect(Collectors.toList());
+    public List<PostResDTO> selectRecommendList(){
+        List<PostResDTO> responseList = repo.findAllByOrderByRecommendDesc().stream()
+                .map(PostResDTO::new).collect(Collectors.toList());
 
         return responseList;
     }
 
     @Override
-    public List<PostResponse> selectPostListByEmail(LoginReqDTO loginReqDTO) {
+    public List<PostResDTO> selectPostListByEmail(LoginReqDTO loginReqDTO) {
         String email = loginReqDTO.getEmail();
         User user = userRepo.findByEmail(email).orElse(null);
         return repo.findAllByUser(user).stream()
-                .map(PostResponse::new).collect(Collectors.toList());
+                .map(PostResDTO::new).collect(Collectors.toList());
     }
 
     @Override
-    public ResponseEntity<String> addPost(PostRequest request, LoginReqDTO userReq) {
+    public ResponseEntity<String> addPost(PostReqDTO request, LoginReqDTO userReq) {
         String email = userReq.getEmail();
         try{
             User user = userRepo.findByEmail(email).orElse(null);
@@ -65,6 +64,7 @@ public class PostServiceImpl implements PostService {
                     .title(request.getTitle())
                     .writer(user.getNickname())
                     .content(request.getContent())
+                            .tag(request.getTag())
                     .view(0)
                     .build()
             );
@@ -78,10 +78,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ResponseEntity<PostResponse> viewPost(HashMap<String, Object> map) {
+    public ResponseEntity<PostResDTO> viewPost(HashMap<String, Object> map) {
         Long postNo = Long.valueOf(map.get("postNo").toString());
         Post post = repo.findByPostNo(postNo).orElse(null);
-        PostResponse response = new PostResponse(post);
+        PostResDTO response = new PostResDTO(post);
         if (response == null) {
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
@@ -91,7 +91,7 @@ public class PostServiceImpl implements PostService {
         }
 
     }
-
+    @Transactional
     @Override
     public ResponseEntity<String> deletePost(HashMap<String, Object> map, LoginReqDTO loginReqDTO) {
         Integer result = null;
@@ -122,25 +122,32 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public ResponseEntity<String> updatePost(PostRequest request, LoginReqDTO loginReqDTO) {
-        Post post = repo.findByPostNo(request.getPostNo()).orElse(null);
-        User user = userRepo.findByEmail(loginReqDTO.getEmail()).orElse(null);
-        if (!user.getEmail().equals(post.getUser().getEmail())){
-            return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
-        }
-        try{
-           repo.save(Post.builder()
-                           .title(request.getTitle())
-                           .view(post.getView())
-                           .recommend(post.getRecommend())
-                           .writer(post.getWriter())
-                           .content(request.getContent())
-                   .build());
-        } catch (Exception err){
-            err.printStackTrace();
-            return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>("success", HttpStatus.OK);
+    public ResponseEntity<String> updatePost(UpdatePostReqDTO reqDTO, LoginReqDTO loginReqDTO) {
+       User user = userRepo.findByEmail(loginReqDTO.getEmail()).orElse(null);
+       Post post = repo.findByPostNo(reqDTO.getPostNo()).orElse(null);
+       Integer result = null;
+       if (!post.getUser().getEmail().equals(user.getEmail())) {
+           return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
+       }
+       Long postNo = reqDTO.getPostNo();
+       String title = reqDTO.getTitle().isBlank() || reqDTO.getTitle() == null? post.getTitle() : reqDTO.getTitle();
+       String content = reqDTO.getContent().isBlank() || reqDTO.getContent() == null? post.getContent() : reqDTO.getTitle();
+
+       try {
+           result = repo.updatePost(title, content, postNo);
+       }
+       catch (Exception err) {
+           err.printStackTrace();
+           return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
+       }
+       if (result > 0) {
+           return new ResponseEntity<>("success", HttpStatus.OK);
+       }
+       else {
+           return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
+
+       }
+
     }
     @Transactional
     @Override
@@ -155,11 +162,11 @@ public class PostServiceImpl implements PostService {
     }
     @Override
     @Transactional
-    public PostResponse getPost(HashMap<String, Object> map){
+    public PostResDTO getPost(HashMap<String, Object> map){
         Optional<Post> postWrapper = repo.findById(Long.valueOf(map.get("postNo").toString()));
         if (postWrapper.isPresent()) {
             Post post = postWrapper.get();
-            PostResponse response = new PostResponse(post);
+            PostResDTO response = new PostResDTO(post);
             return response;
         }
         return null;

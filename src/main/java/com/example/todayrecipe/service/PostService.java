@@ -1,37 +1,37 @@
 package com.example.todayrecipe.service;
 
 
-import com.example.todayrecipe.dto.post.PostRequest;
-import com.example.todayrecipe.dto.post.PostResponse;
+import com.example.todayrecipe.dto.post.PostReqDTO;
+import com.example.todayrecipe.dto.post.PostResDTO;
+import com.example.todayrecipe.dto.post.UpdatePostReqDTO;
 import com.example.todayrecipe.dto.user.LoginReqDTO;
 import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 public interface PostService {
 
     //레시피 게시판 이동 시 게시글 출력
-    List<PostResponse> selectPostList();
+    List<PostResDTO> selectPostList();
 
-    List<PostResponse> selectRecommendList();
+    List<PostResDTO> selectRecommendList();
 
-    List<PostResponse> selectPostListByEmail(LoginReqDTO user);
+    List<PostResDTO> selectPostListByEmail(LoginReqDTO user);
 
     //레시피 작성할 때
-    ResponseEntity<String> addPost(PostRequest request, LoginReqDTO userRequest);
+    ResponseEntity<String> addPost(PostReqDTO request, LoginReqDTO userRequest);
 
     //게시글을 눌렀을 때, 게시글을 출력해 줌
-    ResponseEntity<PostResponse> viewPost(HashMap<String, Object> map);
+    ResponseEntity<PostResDTO> viewPost(HashMap<String, Object> map);
 
     ResponseEntity<String> deletePost(HashMap<String, Object> map, LoginReqDTO user);
 
-    ResponseEntity<String> updatePost(PostRequest request, LoginReqDTO user);
+    ResponseEntity<String> updatePost(UpdatePostReqDTO reqDTO, LoginReqDTO user);
 
     int updateView(HashMap<String, Object> map);
 
     int updateRecommend(HashMap<String, Object> map);
-    PostResponse getPost(HashMap<String, Object> map);
+    PostResDTO getPost(HashMap<String, Object> map);
 
 }
