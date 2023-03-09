@@ -10,7 +10,9 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class PostRequest {
+public class PostReqDTO {
+
+    private Long postNo;
 
     private String title;
 

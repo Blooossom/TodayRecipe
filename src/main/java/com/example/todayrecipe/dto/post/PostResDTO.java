@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class PostResponse {
+public class PostResDTO {
 
     private Long postNo;
     private String title;
@@ -22,10 +22,11 @@ public class PostResponse {
     private int recommend;
     private String created_date;
     private String modified_date;
-    private User user;
+    private String email;
 
-    public PostResponse (Post post) {
-        this.postNo = post.getPostNo();
+    public PostResDTO(Post post) {
+        this.email = post.getUser().getEmail();
+        this.postNo = post.getPostno();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.writer = post.getWriter();
