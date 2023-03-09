@@ -17,7 +17,6 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findAllByPost(Post post);
-    List<Comment> findByPost(Post post);
     List<Comment> findAllByUser(User user);
 
     Integer deleteByCommentNo(Long commentNo);
@@ -26,6 +25,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Modifying
     @Query(value = "UPDATE comment c SET c.content =:content WHERE c.commentNo =:commentNo", nativeQuery = true)
-    Integer updateComment(@Param("content") String content, @Param("commentNo") Long commentNo);
+    Long updateComment(@Param("content") String content, @Param("commentNo") Long commentNo);
     
 }
