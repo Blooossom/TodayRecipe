@@ -26,7 +26,7 @@ public class PostController {
     /**
      * 추천 게시글 조회
      */
-    @GetMapping("/recommendRecipeList")
+    @GetMapping("/recommendlist")
     public List<PostResDTO> viewRecommendRecipe() {
         return service.selectRecommendList();
     }
