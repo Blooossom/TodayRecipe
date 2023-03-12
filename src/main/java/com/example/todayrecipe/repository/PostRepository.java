@@ -22,13 +22,13 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Modifying
     @Query("update Post post set post.view = post.view + 1 where post.postno = :postno")
-    int updateView(Long postno);
+    Integer updateView(Long postno);
 
     List<Post> findAllByUser(User user);
 
     @Modifying
-    @Query("update Post post set post.recommend = post.recommend + 1 where post.postno = :postNo")
-    int updateRecommend(Long postNo);
+    @Query("update Post post set post.recommend = post.recommend + 1 where post.postno = :postno")
+    Integer updateRecommend(Long postno);
 
 //    @Modifying
 //    @Query(value = "UPDATE post p SET p.title =: title, p.content =:content, p.comment WHERE p.postNo =:postNo", nativeQuery = true)
