@@ -24,7 +24,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     Comment findByCommentNo(Long commentNo);
 
     @Modifying
-    @Query(value = "UPDATE comment c SET c.content =:content WHERE c.commentNo =:commentNo", nativeQuery = true)
-    Long updateComment(@Param("content") String content, @Param("commentNo") Long commentNo);
+    @Query(value = "UPDATE comment c SET c.content =:content WHERE c.commentno =:commentNo", nativeQuery = true)
+    Integer updateComment(@Param("content") String content, @Param("commentNo") Long commentNo);
     
 }
