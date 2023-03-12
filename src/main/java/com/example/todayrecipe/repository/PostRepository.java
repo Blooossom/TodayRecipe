@@ -30,8 +30,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("update Post post set post.recommend = post.recommend + 1 where post.postno = :postno")
     Integer updateRecommend(Long postno);
 
-//    @Modifying
-//    @Query(value = "UPDATE post p SET p.title =: title, p.content =:content, p.comment WHERE p.postNo =:postNo", nativeQuery = true)
-//    Long updatePost(@Param("title") String title, @Param("content") String contnt, @Param("postNo") Long postNo);
+    @Modifying
+    @Query(value = "UPDATE post p SET p.title =: title, p.content =:content, p.comment WHERE p.postno =:postNo", nativeQuery = true)
+    Long updatePost(@Param("title") String title, @Param("content") String contnt, @Param("postNo") Long postNo);
 
 }
