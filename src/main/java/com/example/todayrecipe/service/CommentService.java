@@ -20,7 +20,7 @@ public interface CommentService {
 
     ResponseEntity<String> deleteComment(HashMap<String, Object> commentMap, LoginReqDTO loginReqDTO);
 
-    ResponseEntity<String> updateComment(UpdateCommentReqDTO reqDTO, HashMap<String, Object> map);
+    ResponseEntity<String> updateComment(UpdateCommentReqDTO reqDTO);
 
 
 }

@@ -85,17 +85,26 @@ public class CommentServiceImpl implements CommentService {
 
         }
     }
-
+    @Transactional
     @Override
-    public ResponseEntity<String> updateComment(UpdateCommentReqDTO reqDTO, HashMap<String, Object> map) {
-        Comment comment = repo.findByCommentNo(Long.valueOf(map.get("commentNo").toString()));
-        String content = reqDTO.getContent();
-        if (content == null || content.isBlank()) {
-            content = comment.getContent();
+    public ResponseEntity<String> updateComment(UpdateCommentReqDTO reqDTO) {
+        Comment comment = repo.findByCommentNo(reqDTO.getCommentNo());
+        Integer result = null;
+        try {
+            result =  repo.updateComment(reqDTO.getContent(), comment.getCommentNo());
         }
-        Long result = repo.updateComment(content, comment.getCommentNo());
-        String message = result > 0? "success":"failed";
-        return  new ResponseEntity<>(message, message.equals("success")? HttpStatus.OK:HttpStatus.BAD_REQUEST);
+        catch (Exception err) {
+            err.printStackTrace();
+            System.out.println(comment.getCommentNo().toString());
+            System.out.println(comment.getContent().toString());
+            return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
+        }
+        if (result > 0) {
+            return new ResponseEntity<>("success", HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
+        }
     }
 
 
