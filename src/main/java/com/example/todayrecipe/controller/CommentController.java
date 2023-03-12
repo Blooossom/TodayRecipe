@@ -58,8 +58,8 @@ public class CommentController {
 
     @ApiOperation(value = "댓글 수정", notes = "댓글 수정하는 API")
     @PutMapping("/comment")
-    public ResponseEntity<String> modifyComment(@RequestBody UpdateCommentReqDTO reqDTO, @RequestBody HashMap<String, Object> map){
-        return service.updateComment(reqDTO, map);
+    public ResponseEntity<String> modifyComment(@RequestBody UpdateCommentReqDTO reqDTO){
+        return service.updateComment(reqDTO);
     }
     @Transactional
     @ApiOperation(value = "댓글 삭제", notes = "댓글을 삭제하는 API")
