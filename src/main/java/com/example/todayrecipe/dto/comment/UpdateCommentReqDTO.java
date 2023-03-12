@@ -9,6 +9,8 @@ import lombok.*;
 @ToString
 public class UpdateCommentReqDTO {
 
+    private Long commentNo;
+
     private String content;
 
 }
