@@ -1,6 +1,5 @@
 package com.example.todayrecipe.entity;
 
-import com.example.todayrecipe.dto.post.PostEditor;
 import com.example.todayrecipe.util.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,9 +20,9 @@ public class Post extends BaseTimeEntity {
 
 
     @Id
-    @Column
+    @Column(name = "postno")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postNo;
+    private Long postno;
 
     @Column(length = 500, nullable = false)
     private String title;
@@ -52,15 +51,4 @@ public class Post extends BaseTimeEntity {
         this.title = title;
         this.content = content;
     }
-
-    public PostEditor.PostEditorBuilder toEditor(){
-        return PostEditor.builder()
-                .title(title)
-                .content(content);
-    }
-    public void edit(PostEditor postEditor) {
-        title =  postEditor.getTitle();
-        content = postEditor.getContent();
-    }
-
 }
