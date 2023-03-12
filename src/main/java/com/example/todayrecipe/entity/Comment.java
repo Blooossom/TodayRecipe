@@ -21,7 +21,7 @@ public class Comment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "commentNo")
+    @Column(name = "commentno")
     private Long commentNo;
 
     @Column(columnDefinition = "TEXT", nullable = false)
@@ -31,16 +31,11 @@ public class Comment extends BaseTimeEntity {
     private String writer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "email")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "postno")
     private Post post;
-
-
-    public void update(String content){
-        this.content = content;
-    }
 
 }
