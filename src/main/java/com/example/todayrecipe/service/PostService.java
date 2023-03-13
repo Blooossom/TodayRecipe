@@ -5,6 +5,8 @@ import com.example.todayrecipe.dto.post.PostReqDTO;
 import com.example.todayrecipe.dto.post.PostResDTO;
 import com.example.todayrecipe.dto.post.UpdatePostReqDTO;
 import com.example.todayrecipe.dto.user.LoginReqDTO;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
