@@ -1,8 +1,6 @@
 package com.example.todayrecipe.security;
 
 import com.example.todayrecipe.jwt.JwtAuthenticationFilter;
-import com.example.todayrecipe.jwt.JwtFilter;
-import com.example.todayrecipe.jwt.JwtProvider;
 import com.example.todayrecipe.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -10,12 +8,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -34,12 +29,11 @@ public class WebSecurityConfig{
      * Security 설정을 위한 class로 WebSecurityConfigurerAdapter를 상속받음
      */
     private static final String[] PUBLIC_URLS = {
-            "**/signup", "**/login" , "**/logout", "**/goPost", "**/loginTest", "**/sign-up"
+            "**/signup", "**/login" , "**/logoutTest", "**/goPost", "**/loginTest", "**/sign-up"
     };
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    private final JwtFilter filter;
 
     private final RedisTemplate redisTemplate;
 
@@ -88,9 +82,7 @@ public class WebSecurityConfig{
 
                 .and()
 
-                .addFilterBefore(
-                        filter,
-                        UsernamePasswordAuthenticationFilter.class).build();
+                .build();
         //인증을 처리하는 기본필터 UsernamePasswordAuthenticationFilter 대신 별도의 인증 로직을 가진 필터를 생성하고 사용하고 싶을 때 아래와 같이 필터를 등록하고 사용
     }
 
