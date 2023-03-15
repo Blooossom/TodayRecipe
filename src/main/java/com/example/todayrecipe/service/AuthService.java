@@ -9,13 +9,19 @@ public interface AuthService {
 
     ResponseEntity signUp(UserReqDTO signUpReq);
 
-    ResponseEntity<LoginResDTO> login(LoginReqDTO loginReqDTO);
+    ResponseEntity<?> signUp(UserReqDTO.SignUp signUp);
+
+    ResponseEntity<?> login(UserReqDTO.Login login);
+
+    ResponseEntity<?> logout(String accessToken);
 
     Map<String, String> checkPassword(String email, String password);
 
-    ResponseEntity<String> updateUserInfo(UpdateUserReqDTO updateUserReqDTO, LoginReqDTO user);
+    ResponseEntity<?> reissue(UserReqDTO.Reissue reissue);
+
+    ResponseEntity<?> updateUserInfo(UpdateUserReqDTO updateUserReqDTO, String accessToken);
 
     ResponseEntity<String> signOut(LoginReqDTO loginReqDTO);
 
-    ResponseEntity<UserResDTO> viewMyInfo(LoginReqDTO reqDTO);
+    ResponseEntity<?> viewMyInfo(String accessToken);
 }
