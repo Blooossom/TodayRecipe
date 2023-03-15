@@ -1,10 +1,10 @@
 package com.example.todayrecipe.service.impl;
 
+import com.example.todayrecipe.dto.Response;
 import com.example.todayrecipe.dto.comment.CommentReqDTO;
 import com.example.todayrecipe.dto.comment.CommentResDTO;
-import com.example.todayrecipe.dto.comment.UpdateCommentReqDTO;
-import com.example.todayrecipe.dto.user.LoginReqDTO;
 import com.example.todayrecipe.entity.Comment;
+import com.example.todayrecipe.jwt.JwtTokenProvider;
 import com.example.todayrecipe.repository.CommentRepository;
 import com.example.todayrecipe.entity.Post;
 import com.example.todayrecipe.repository.PostRepository;
@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,34 +24,35 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
-    private final CommentRepository repo;
+    private final CommentRepository commentRepo;
+    private final Response response;
     private final PostRepository postRepo;
     private final UserRepository userRepo;
-
+    private final JwtTokenProvider provider;
     @Override
-    public List<CommentResDTO> viewCommentList(HashMap<String, Object> map) {
-        Post post = postRepo.findByPostno(Long.valueOf(map.get("postNo").toString())).orElse(null);
-        return repo.findAllByPost(post)
+    public ResponseEntity<?> viewCommentList(Long postNo) {
+        Post post = postRepo.findByPostno(postNo).orElse(null);
+        return response.success(commentRepo.findAllByPost(post)
                 .stream()
                 .map(CommentResDTO::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()), "success", HttpStatus.OK );
     }
 
     @Override
-    public List<CommentResDTO> viewMyComment(LoginReqDTO loginReqDTO) {
-        User user = userRepo.findByEmail(loginReqDTO.getEmail()).orElse(null);
-        return repo.findAllByUser(user)
+    public ResponseEntity<?> viewMyComment(String accessToken) {
+        User user = userRepo.findByEmail(provider.getAuthentication(accessToken).getName()).orElse(null);
+        return response.success(commentRepo.findAllByUser(user)
                 .stream()
                 .map(CommentResDTO::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()), "success", HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<String> addComment(CommentReqDTO commentReqDTO, LoginReqDTO loginReqDTO) {
+    public ResponseEntity<?> addComment(CommentReqDTO.WriteReq commentReqDTO, String accessToken) {
         try {
-            Post post = postRepo.findByPostno(commentReqDTO.getPostno()).orElse(null);
-            User user = userRepo.findByEmail(loginReqDTO.getEmail()).orElse(null);
-            repo.save(commentReqDTO.toEntity(user, post));
+            Post post = postRepo.findByPostno(commentReqDTO.getPostNo()).orElse(null);
+            User user = userRepo.findByEmail(provider.getAuthentication(accessToken).getName()).orElse(null);
+            commentRepo.save(commentReqDTO.toEntity(post, user));
 //                    Comment.builder()
 //                            .post(post)
 //                            .user(user)
@@ -68,15 +68,15 @@ public class CommentServiceImpl implements CommentService {
     }
     @Transactional
     @Override
-    public ResponseEntity<String> deleteComment(HashMap<String, Object> map, LoginReqDTO loginReqDTO) {
+    public ResponseEntity<?> deleteComment(Long commentNo, String accessToken) {
         try{
-            User user = userRepo.findByEmail(loginReqDTO.getEmail()).orElse(null);
-            Comment comment = repo.findByCommentNo(Long.valueOf(map.get("commentNo").toString()));
+            User user = userRepo.findByEmail(provider.getAuthentication(accessToken).getName()).orElse(null);
+            Comment comment = commentRepo.findByCommentNo(commentNo);
             if (!user.getEmail().equals(comment.getUser().getEmail())) {
                 return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
             }
             else {
-                Integer result = repo.deleteByCommentNo(comment.getCommentNo());
+                Integer result = commentRepo.deleteByCommentNo(comment.getCommentNo());
                 return new ResponseEntity<>("success", result>0? HttpStatus.OK:HttpStatus.BAD_REQUEST);
             }
         }catch (Exception err) {
@@ -87,11 +87,11 @@ public class CommentServiceImpl implements CommentService {
     }
     @Transactional
     @Override
-    public ResponseEntity<String> updateComment(UpdateCommentReqDTO reqDTO) {
-        Comment comment = repo.findByCommentNo(reqDTO.getCommentNo());
+    public ResponseEntity<?> updateComment(CommentReqDTO.UpdateReq reqDTO) {
+        Comment comment = commentRepo.findByCommentNo(reqDTO.getCommentNo());
         Integer result = null;
         try {
-            result =  repo.updateComment(reqDTO.getContent(), comment.getCommentNo());
+            result =  commentRepo.updateComment(reqDTO.getContent(), comment.getCommentNo());
         }
         catch (Exception err) {
             err.printStackTrace();
