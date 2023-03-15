@@ -117,12 +117,14 @@ public class UserController {
     }
 
     @PostMapping("/logoutTest")
-    public ResponseEntity<?> logout(@AuthenticationPrincipal UserReqDTO.Logout logout, Errors errors) {
+    public ResponseEntity<?> logoutTest(@RequestHeader(name = "Authorization") String token) {
+        System.out.println(token);
+
         // validation check
-        if (errors.hasErrors()) {
-            return response.invalidFields(Helper.refineErrors(errors));
-        }
-        return usersService.logout(logout);
+//        if (errors.hasErrors()) {
+//            return response.invalidFields(Helper.refineErrors(errors));
+//        }
+        return usersService.logout(token);
     }
 
     @GetMapping("/authority")
