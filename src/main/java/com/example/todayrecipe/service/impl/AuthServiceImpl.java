@@ -22,6 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
 import java.sql.Time;
 import java.util.Collections;
@@ -247,5 +249,37 @@ public class AuthServiceImpl implements AuthService {
 
     private String encodingPassword(String password) {
         return encoder.encode(password);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Map<String, String> validateHandling(Errors errors){
+        Map<String, String> validatorResult = new HashMap<>();
+
+        for (FieldError error : errors.getFieldErrors()) {
+            String validKeyName = String.format("valid_%s", error.getField());
+            validatorResult.put(validKeyName, error.getDefaultMessage());
+        }
+        return validatorResult;
+    }
+
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public void checkNickNameDuplication(UserReqDTO.SignUp signUp) {
+        boolean nicknameDuplication = userRepo.existsByNickname(signUp.getNickname());
+        if (nicknameDuplication) {
+            throw new IllegalStateException("이미 존재하는 닉네임입니다.");
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void checkEmailDuplication(UserReqDTO.SignUp signUp) {
+        boolean emailDuplication = userRepo.existsByEmail(signUp.getEmail());
+        if (emailDuplication) {
+            throw new IllegalStateException("이미 존재하는 이메일입니다.");
+        }
     }
 }

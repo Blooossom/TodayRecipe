@@ -2,6 +2,7 @@ package com.example.todayrecipe.service;
 
 import com.example.todayrecipe.dto.user.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 
 import java.util.Map;
 
@@ -24,4 +25,9 @@ public interface AuthService {
     ResponseEntity<String> signOut(LoginReqDTO loginReqDTO);
 
     ResponseEntity<?> viewMyInfo(String accessToken);
+
+    Map<String, String> validateHandling(Errors errors);
+
+    void checkNickNameDuplication(UserReqDTO.SignUp signUp);
+    void checkEmailDuplication(UserReqDTO.SignUp signUp);
 }
