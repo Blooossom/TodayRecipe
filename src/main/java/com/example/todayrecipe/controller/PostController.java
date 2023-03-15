@@ -5,9 +5,15 @@ import com.example.todayrecipe.dto.post.PostReqDTO;
 import com.example.todayrecipe.dto.post.PostResDTO;
 import com.example.todayrecipe.dto.post.UpdatePostReqDTO;
 import com.example.todayrecipe.dto.user.LoginReqDTO;
+import com.example.todayrecipe.dto.user.UserReqDTO;
 import com.example.todayrecipe.service.PostService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.internal.util.StringHelper;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,7 +59,7 @@ public class PostController {
      */
     @ApiOperation(value = "게시글 검색", notes = "키워드에 따라 게시글을 검색하는 API")
     @GetMapping("/post/search?keyword={keyword}")
-    public List<PostResDTO> viewPostListByNickName() {
+    public List<PostResDTO> search(@RequestParam(value = "keyword") String keyword){
         return null;
     }
 
@@ -62,8 +68,8 @@ public class PostController {
      */
     @ApiOperation(value = "게시글 작성", notes = "게시글을 작성하는 API")
     @PostMapping("/post")
-    public ResponseEntity<String> writePost(@AuthenticationPrincipal LoginReqDTO user, @RequestBody PostReqDTO request) {
-        return service.addPost(request, user);
+    public ResponseEntity<String> writePost(@RequestHeader("Authorization") String accessToken, @RequestBody PostReqDTO.WritePost request) {
+        return service.addPost(request, accessToken);
     }
 
     /**
@@ -89,8 +95,8 @@ public class PostController {
     @Transactional
     @ApiOperation(value = "게시글 수정", notes = "게시글을 수정하는 API")
     @PutMapping("/post")
-    public ResponseEntity<String> updatePost(@AuthenticationPrincipal LoginReqDTO user, @RequestBody UpdatePostReqDTO reqDTO) {
-        return service.updatePost(reqDTO, user);
+    public ResponseEntity<String> updatePost(@AuthenticationPrincipal LoginReqDTO user, @RequestBody PostReqDTO.UpdatePost updateReq) {
+        return service.updatePost(updateReq, user);
     }
 
     /**
@@ -100,5 +106,4 @@ public class PostController {
     public ResponseEntity<String> recommend(@RequestBody HashMap<String, Object> map) {
         return service.updateRecommend(map);
     }
-
 }

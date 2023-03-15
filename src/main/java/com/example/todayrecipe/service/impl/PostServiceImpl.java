@@ -4,7 +4,9 @@ import com.example.todayrecipe.dto.post.PostReqDTO;
 import com.example.todayrecipe.dto.post.PostResDTO;
 import com.example.todayrecipe.dto.post.UpdatePostReqDTO;
 import com.example.todayrecipe.dto.user.LoginReqDTO;
+import com.example.todayrecipe.dto.user.UserReqDTO;
 import com.example.todayrecipe.entity.Post;
+import com.example.todayrecipe.jwt.JwtTokenProvider;
 import com.example.todayrecipe.repository.PostRepository;
 import com.example.todayrecipe.entity.User;
 import com.example.todayrecipe.repository.UserRepository;
@@ -29,6 +31,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
+
+    private final JwtTokenProvider provider;
 
     private final PostRepository postRepo;
     private final UserRepository userRepo;
@@ -60,8 +64,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ResponseEntity<String> addPost(PostReqDTO request, LoginReqDTO userReq) {
-        String email = userReq.getEmail();
+    public ResponseEntity<String> addPost(PostReqDTO.WritePost request, String accessToken) {
+
+        String email = provider.getAuthentication(accessToken).getName();
         try{
             User user = userRepo.findByEmail(email).orElse(null);
             postRepo.save(Post.builder()
@@ -127,12 +132,12 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public ResponseEntity<String> updatePost(UpdatePostReqDTO reqDTO, LoginReqDTO loginReqDTO) {
+    public ResponseEntity<String> updatePost(PostReqDTO.UpdatePost updateReq, LoginReqDTO loginReqDTO) {
         User user = userRepo.findByEmail(loginReqDTO.getEmail()).orElse(null);
-        Post post = postRepo.findByPostno(reqDTO.getPostNo()).orElse(null);
+        Post post = postRepo.findByPostno(updateReq.getPostNo()).orElse(null);
 
-        String title = reqDTO.getTitle().isBlank() || reqDTO.getTitle() == null? post.getTitle(): reqDTO.getTitle();
-        String content = reqDTO.getContent().isBlank() || reqDTO.getContent() == null? post.getContent(): reqDTO.getContent();
+        String title = updateReq.getTitle().isBlank() || updateReq.getTitle() == null? post.getTitle(): updateReq.getTitle();
+        String content = updateReq.getContent().isBlank() || updateReq.getContent() == null? post.getContent(): updateReq.getContent();
         try {
             postRepo.save(Post.builder().postno(post.getPostno())
                             .user(user)
