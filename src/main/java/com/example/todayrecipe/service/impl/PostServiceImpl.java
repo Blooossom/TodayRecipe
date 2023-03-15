@@ -189,17 +189,7 @@ public class PostServiceImpl implements PostService {
         }
       return new ResponseEntity<>("success", HttpStatus.OK);
     }
-    @Override
-    @Transactional
-    public PostResDTO getPost(HashMap<String, Object> map){
-        Optional<Post> postWrapper = postRepo.findById(Long.valueOf(map.get("postNo").toString()));
-        if (postWrapper.isPresent()) {
-            Post post = postWrapper.get();
-            PostResDTO response = new PostResDTO(post);
-            return response;
-        }
-        return null;
-    }
+
 
 
 }
